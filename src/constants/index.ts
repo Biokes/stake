@@ -162,7 +162,6 @@ export const TOKEN_ABI = [
     type: "function",
   },
 ] as const;
-
 export const STAKING_CONTRACT_ABI = [
   {
     inputs: [

@@ -27,6 +27,7 @@ export default function Home() {
                             toast.error("Kindly Connect your Wallet to Stake");
                             return;
                         }
+                        toggle()
                     }}>Stake Now</Button>
                 </article>
                 {isOpen &&

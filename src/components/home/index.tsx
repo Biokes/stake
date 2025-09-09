@@ -14,15 +14,15 @@ export default function Home() {
     }
     return (
         <div className="w-full">
-            <div className="w-full text-center py-2">
-                <article className="py-15 flex flex-col justify-between items-center text-cnter w-full gap-2">
-                    <h5 className="text-lg">
+            <div className="w-full text-center py-2 px-3 md:px-5">
+                <article className="py-10 flex border-1 border-gray-50 rounded flex-col justify-between items-center text-cnter w-full gap-2 shadow bg-gray-50">
+                    <h5 className="text-4xl">
                         Stake and Earn your rewards
                     </h5>
-                    <span className="text-primary text-[0.8rem] max-w-[400px]">
+                    <span className="text-primary text-[1rem] max-w-[500px]">
                         Join thousands of stakers earning competitive rewards on Ethereum. Simple, secure, and transparent DeFi staking.
                     </span>
-                    <Button className={'my-4'} onClick={() => {
+                    <Button className={'my-2 hover:scale-[1.05]'} onClick={() => {
                         if (!isConnected) {
                             toast.error("Kindly Connect your Wallet to Stake");
                             return;

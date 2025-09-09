@@ -15,7 +15,6 @@ export default function Home() {
     return (
         <div className="w-full">
             <div className="w-full text-center py-2">
-
                 <article className="py-15 flex flex-col justify-between items-center text-cnter w-full gap-2">
                     <h5 className="text-lg">
                         Stake and Earn your rewards

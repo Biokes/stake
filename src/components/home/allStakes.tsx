@@ -7,17 +7,17 @@ import { useFetchStakes } from '../hooks/useFetchStakes'
 export default function AllStakes() {
   const { usersInfo } = useFetchStakes()
   const totalStakers = usersInfo.length
-  const totalStaked = usersInfo.reduce((sum, user) => sum + Number(user.info.stakedAmount), 0)
-  const totalRewards = usersInfo.reduce((sum, user) => sum + Number(user.info.pendingRewards), 0)
+  const totalRewards = 0
+  const totalStaked = 0
 
   function formatTimestamp(timestamp: bigint): string {
-  const date = new Date(Number(timestamp * 1000n));
-  if (isNaN(date.getTime())) return "Invalid date";
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-}
+    const date = new Date(Number(timestamp * 1000n));
+    if (isNaN(date.getTime())) return "Invalid date";
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
   return (
     <Card className="bg-gradient-secondary border-border shadow-card">
       <CardHeader className="py-2 rounded bg-gray-100 shadow mx-3">
@@ -27,7 +27,7 @@ export default function AllStakes() {
               <BarChart3 className="w-5 h-5 text-primary-foreground" />
             </div>
             <div >
-              <CardTitle className="text-xl">All Stake Positions</CardTitle>
+              <CardTitle className="text-xl">All Stake History</CardTitle>
               <CardDescription>
                 View all active staking positions across the protocol
               </CardDescription>
@@ -64,41 +64,41 @@ export default function AllStakes() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-border/50 overflow-hidden">
+        <div className={`rounded-lg border border-border/50 overflow-hidden ${usersInfo.length> 0?"max-h-[200px] overflow-auto" :""}`}>
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/10 hover:bg-muted/10 border-border/50">
                 <TableHead className="text-muted-foreground font-medium">Address</TableHead>
                 <TableHead className="text-muted-foreground font-medium">Staked</TableHead>
-                <TableHead className="text-muted-foreground font-medium">Rewards</TableHead>
-                <TableHead className="text-muted-foreground font-medium">Clained Rewards</TableHead>
-                <TableHead className="text-muted-foreground font-medium">last staking</TableHead>
+                <TableHead className="text-muted-foreground font-medium">Current rate</TableHead>
+                <TableHead className="text-muted-foreground font-medium">Total Staked</TableHead>
+                <TableHead className="text-muted-foreground font-medium">last Staked Time</TableHead>
                 {/* <TableHead className="text-muted-foreground font-medium">Action</TableHead> */}
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {usersInfo.map((user, index) => (
-                <TableRow key={index} className="border-border/30 hover:bg-muted/5 transition-smooth">
-                  <TableCell className="font-mono text-sm">
-                    {user.address}
-                  </TableCell>
-                  <TableCell className="font-semibold">
-                    {user.info.stakedAmount} RSK
-                  </TableCell>
-                  <TableCell className="text-success font-semibold">
-                    {user.info.pendingRewards} RSK
-                  </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {user.info.rewardDebt}
-                  </TableCell>
-                  <TableCell>
-                    <Badge className="bg-success/10 text-success border-success/20 text-xs">
-                      {formatTimestamp(user.info.lastStakeTimestamp)}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+              <TableBody className="w-full">
+                {usersInfo.map((user, index) => (
+                  <TableRow key={index} className="border-border/30 hover:bg-muted/5 transition-smooth">
+                    <TableCell className="font-mono text-sm">
+                      {user.address.substring(0, 7)}..
+                    </TableCell>
+                    <TableCell className="font-semibold">
+                      {user.amount} RSK
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {user.currentRewardRate}
+                    </TableCell>
+                    <TableCell className="text-success font-semibold">
+                      {user.newTotalStaked} RSK
+                    </TableCell>
+                    <TableCell>
+                      <Badge className="bg-success/10 text-success border-success/20 text-xs">
+                        {formatTimestamp(user.timestamp)}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
           </Table>
         </div>
 

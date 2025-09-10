@@ -1,3 +1,4 @@
+import type { EventLog } from "ethers";
 import {
   ethersJsonRpcProvider,
   stakingContract,
@@ -28,18 +29,24 @@ export interface UserInfoWithAddress {
 
 export const useFetchStakes = () => {
   const { address } = useAccount();
-  const [usersInfo, setUserInfo] = useState<UserInfoWithAddress[]>([]);
+  const [usersInfo, setUserInfo] = useState<StakeLog[]>([]);
   const fetchUserInfo = useCallback(async () => {
     if (!address) return;
     try {
       const lastBlock = await ethersJsonRpcProvider.getBlockNumber();
-      const usersInfo = await stakingContract.queryFilter(
+      const allLogs = (await stakingContract.queryFilter(
         "Staked",
         lastBlock - 10000,
         "latest"
-      );
-      console.log("Fetched usersInfo: ", usersInfo);
-      // setUserInfo([]);
+      )) as EventLog[];
+      const parsedLogs: StakeLog[] = allLogs.map((log) => ({
+        address: log.args[0],
+        amount: log.args[1],
+        timestamp: log.args[2],
+        newTotalStaked: log.args[3],
+        currentRewardRate: log.args[4],
+      }));
+      setUserInfo(parsedLogs);
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong fetching staking positions");
@@ -47,8 +54,10 @@ export const useFetchStakes = () => {
   }, [address]);
 
   useEffect(() => {
-    fetchUserInfo();
-  }, [fetchUserInfo]);
+    if (address) {
+      fetchUserInfo();
+    }
+  }, [address, fetchUserInfo]);
 
   useEffect(() => {
     if (!address) return;
@@ -59,9 +68,18 @@ export const useFetchStakes = () => {
       onLogs: (logs) => {
         logs.forEach((log) => {
           console.log(log);
-          const stakeProps = log.args as StakeLog
+          const stakeProps = log.args as StakeLog;
           toast.success(`${stakeProps.amount.toString()} staked  tokens now.`);
-          fetchUserInfo();
+          setUserInfo((prev) => [
+            ...prev,
+            {
+              address: stakeProps.address,
+              amount: stakeProps.amount,
+              timestamp: stakeProps.timestamp,
+              newTotalStaked: stakeProps.newTotalStaked,
+              currentRewardRate: stakeProps.currentRewardRate,
+            },
+          ]);
         });
       },
     });
@@ -69,7 +87,7 @@ export const useFetchStakes = () => {
     return () => {
       unwatch?.();
     };
-  }, [client, address, fetchUserInfo]);
+  }, [address, fetchUserInfo]);
 
   return { usersInfo, fetchUserInfo };
 };

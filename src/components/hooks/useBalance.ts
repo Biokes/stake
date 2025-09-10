@@ -5,7 +5,7 @@ import { useAccount, usePublicClient } from "wagmi";
 export const useBalance = () => {
   const client = usePublicClient();
   const { address } = useAccount();
-  const [tokenBalance, setBalance] = useState<number>(0);
+  const [tokenBalance, setBalance] = useState<bigint>(BigInt(0));
   const fetchTokenBalance = useCallback(async () => {
     if (!client) return;
     try {
@@ -14,8 +14,8 @@ export const useBalance = () => {
         abi: TOKEN_ABI,
         functionName: "balanceOf",
         args: [`0x${address?.substring(2)}`],
-      });
-      setBalance(Number(balance));
+      }) as bigint;
+      setBalance(balance);
     } catch (error) {
       console.log(error);
     }

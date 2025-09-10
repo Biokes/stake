@@ -34,7 +34,7 @@ export default function Home() {
                     <StakeModal setOpen={() => toggle()} />}
             </div>
             <section className="flex flex-col sm:flex-row gap-2 px-3">
-                <div className="bg-card/50 p-2 w-full sm:w-[50%]">
+                <div className="bg-card/50 w-full sm:w-[50%]">
                     <StakingPosition />
                 </div>
                 <section className="mb-5">
@@ -47,3 +47,4 @@ export default function Home() {
         </div >
     )
 }
+

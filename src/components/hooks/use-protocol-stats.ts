@@ -1,123 +1,101 @@
-import { stakingContract } from "@/config";
-import { STAKING_CONTRACT_ADDRESS, STAKING_CONTRACT_ABI } from "@/constants";
-import type { ProtocolStats, StakeLog } from "@/lib/types";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { formatEther, type Hex } from "viem";
 import { usePublicClient } from "wagmi";
-import { useFetchStakes } from "./useFetchStakes";
+import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS } from "@/config/contracts";
+import type { ProtocolStats } from "@/lib/types";
 
 export function useProtocolStats() {
   const client = usePublicClient();
-  const [stakes, setStakesHistory] = useState<StakeLog[]>([]);
   const [protocolStats, setProtocolStats] = useState<ProtocolStats>({
-    totalReward: 0,
-    averageAPR: 0,
-    totalStaked: 0,
-    rewardRate: 0,
-    stakes: stakes,
+    totalStaked: 0n,
+    totalRewards: 0n,
+    rewardRate: 0n,
+    stakersCount: 0
   });
-  const { usersInfo } = useFetchStakes();
 
-  const totalRewards = useCallback(async () => {
+  const getTotalRewards = useCallback(async () => {
+    if (!client) return 0n;
     try {
-      const uniqueUsers = Object.values(
-        usersInfo.reduce((acc, log) => {
-          acc[log.address] = log;
-          return acc;
-        }, {} as Record<string, StakeLog>)
-      );
-      uniqueUsers.forEach(async (data) => {
-        const rewards = await client?.readContract({
-          abi: STAKING_CONTRACT_ABI,
-          address: STAKING_CONTRACT_ADDRESS,
-          functionName: "getPendingRewards",
-          args: [data.address as Hex],
-        });
-        setProtocolStats({...protocolStats,totalReward: protocolStats.totalReward+=Number(formatEther(rewards?? 0n))})
+      const data = await client.readContract({
+        abi: STAKING_CONTRACT_ABI,
+        address: STAKING_CONTRACT_ADDRESS,
+        functionName: "totalRewards",
       });
+      return data as bigint;
     } catch (error) {
-      console.error("Active stakers error: ", error);
-      return 0;
+      console.error("Total rewards error: ", error);
+      return 0n;
     }
-  }, [client, protocolStats, usersInfo]);
+  }, [client]);
 
-  const totalReward = useCallback(async () => {
+  const getTotalStaked = useCallback(async () => {
+    if (!client) return 0n;
     try {
-      const data = await client?.readContract({
+      const data = await client.readContract({
         abi: STAKING_CONTRACT_ABI,
         address: STAKING_CONTRACT_ADDRESS,
         functionName: "totalStaked",
       });
-      return Number(formatEther(data ?? 0n));
+      return data as bigint;
     } catch (error) {
-      console.error("Stake error: ", error);
-      return 0;
+      console.error("Total staked error: ", error);
+      return 0n;
     }
   }, [client]);
 
-  const rewardRate = useCallback(async () => {
+  const getRewardRate = useCallback(async () => {
+    if (!client) return 0n;
     try {
-      const data = await client?.readContract({
+      const data = await client.readContract({
         abi: STAKING_CONTRACT_ABI,
         address: STAKING_CONTRACT_ADDRESS,
-        functionName: "currentRewardRate",
+        functionName: "rewardRate",
       });
-      return Number(data ?? 0);
+      return data as bigint;
     } catch (error) {
       console.error("Reward rate error: ", error);
-      return 0;
+      return 0n;
     }
   }, [client]);
 
   const fetchStats = useCallback(async () => {
     try {
-      const [staked, rewards, rate] = await Promise.all([
-        totalReward(),
-        totalRewards(),
-        rewardRate(),
+      const [totalStaked, totalRewards, rewardRate] = await Promise.all([
+        getTotalStaked(),
+        getTotalRewards(),
+        getRewardRate(),
       ]);
 
       setProtocolStats({
-        totalReward: rewards??0,
-        averageAPR: 10,
-        totalStaked: staked,
-        rewardRate: rate,
-        stakes: stakes,
+        totalStaked,
+        totalRewards,
+        rewardRate,
+        stakersCount: 0
       });
     } catch (error) {
       console.log("Fetch stats error: ", error);
       toast.error("Error fetching protocol stats");
     }
-  }, [rewardRate, stakes, totalReward, totalRewards]);
+  }, [getTotalStaked, getTotalRewards, getRewardRate]);
 
   useEffect(() => {
     fetchStats();
+    
+    if (!client) return;
+    
+    const unwatch = client.watchContractEvent({
+      address: STAKING_CONTRACT_ADDRESS,
+      abi: STAKING_CONTRACT_ABI,
+      eventName: 'Staked',
+      onLogs: () => {
+        fetchStats();
+      },
+    });
+
+    return () => {
+      unwatch();
+    };
   }, [client, fetchStats]);
 
-  const stakeFilter = (
-    user: string,
-    amount: bigint,
-    timestamp: bigint,
-    newTotalStaked: bigint,
-    currentRewardRate: bigint
-  ) => {
-    setStakesHistory((prev) => [
-      ...prev,
-      {
-        address: user,
-        amount: amount,
-        timestamp: timestamp,
-        newTotalStaked: newTotalStaked,
-        currentRewardRate: currentRewardRate,
-      },
-    ]);
-  };
-  useEffect(() => {
-    stakingContract.on("Staked", stakeFilter);
-    return () => {
-      stakingContract.on("Staked", stakeFilter);
-    };
-  }, []);
   return protocolStats;
 }

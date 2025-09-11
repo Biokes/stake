@@ -16,11 +16,10 @@ export interface UserInfoWithAddress {
   info: UserInfo;
 }
 export interface UserDetails {
-  stakedAmount: number;
-  lastStakeTimestamp: number;
-  pendingRewards: number;
-  timeUntilUnlock: number;
-  canWithdraw: boolean;
+  stakeBalance: bigint;
+  userReward: bigint;
+  lastUpdateTime: bigint;
+  rewardRate: bigint;
 }
 
 
@@ -31,9 +30,8 @@ export interface RewardsState {
   currentAPR: string
 }
 export interface ProtocolStats {
-  totalReward: number;
-  averageAPR: number;
-  totalStaked: number;
-    rewardRate: number;
-    stakes:StakeLog[]
+  totalStaked: bigint;
+  totalRewards: bigint;
+  rewardRate: bigint;
+  stakersCount: number;
 }

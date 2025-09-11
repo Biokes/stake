@@ -4,16 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Gift, TrendingUp, Clock } from "lucide-react"
-import { useRewards } from "./hooks/use-Rewards"
-  // import { useProtocolStats } from "./hooks/use-protocol-stats"
-import { useFetchUserInfo } from "./hooks/useFetchUserInfo"
-import { formatTimeRemaining } from "@/lib/utils"
+import { useStakingContext } from "@/hooks/useStakingContext"
+import { formatEther } from "viem"
 
 export function RewardsDisplay() {
-  const { pendingRewards, totalEarned } = useRewards()
-    const { userDetails } = useFetchUserInfo()
-  const TEN_DAYS_SECONDS = 864_000;
-  const progressValue = Math.round(((TEN_DAYS_SECONDS - userDetails.timeUntilUnlock) / TEN_DAYS_SECONDS) * 100);
+  const { userDetails, protocolStats } = useStakingContext()
+  const formattedUserReward = Number(formatEther(userDetails.userReward))
+  const apr = Number(protocolStats.rewardRate) / 1e18 * 100
+  const lastUpdateTime = Number(userDetails.lastUpdateTime)
+  const progressValue = Math.min(((Date.now() / 1000 - lastUpdateTime) / 86400) * 100, 100)
 
   return (
     <Card>
@@ -29,38 +28,37 @@ export function RewardsDisplay() {
           <div className="p-4 bg-muted rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Pending Rewards</span>
-              <Badge variant="outline">10% APR</Badge>
+              <Badge variant="outline">{apr.toFixed(2)}% APR</Badge>
             </div>
-            <p className="text-2xl font-bold text-foreground">{pendingRewards} RFK</p>
+            <p className="text-2xl font-bold text-foreground">{formattedUserReward.toFixed(4)} RFK</p>
             <div className="flex items-center mt-2 text-sm text-muted-foreground">
               <Clock className="h-4 w-4 mr-1" />
-              Next reward in {formatTimeRemaining(BigInt(Math.floor(Date.now() / 1000)) + BigInt(userDetails.timeUntilUnlock))}
+              Updated {Math.floor((Date.now() / 1000 - lastUpdateTime) / 60)} minutes ago
             </div>
           </div>
 
           <div className="p-4 bg-muted rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Total Earned</span>
+              <span className="text-sm text-muted-foreground">Total Staked</span>
               <TrendingUp className="h-4 w-4 text-green-500" />
             </div>
-            <p className="text-2xl font-bold text-foreground">{totalEarned} RFK</p>
-            <p className="text-sm text-muted-foreground mt-2">Lifetime earnings from staking</p>
+            <p className="text-2xl font-bold text-foreground">
+              {Number(formatEther(userDetails.stakeBalance)).toFixed(4)} RFK
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">Your current stake</p>
           </div>
         </div>
 
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Reward Progress</span>
-            <span className="text-foreground">{progressValue}%</span>
+            <span className="text-foreground">{progressValue.toFixed(0)}%</span>
           </div>
           <Progress value={progressValue} className="h-2" />
-          <p className="text-xs text-muted-foreground">Next reward distribution in {formatTimeRemaining(BigInt(Math.floor(Date.now() / 1000)) + BigInt(userDetails.timeUntilUnlock))}</p>
+          <p className="text-xs text-muted-foreground">
+            Rewards accrue continuously, claim at any time
+          </p>
         </div>
-
-        {/* <Button className="w-full" onClick={claimRewards}>
-          <Gift className="mr-2 h-4 w-4" />
-          Claim Rewards ({pendingRewards} RFK)
-        </Button> */}
       </CardContent>
     </Card>
   )

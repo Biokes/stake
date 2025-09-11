@@ -1,14 +1,14 @@
-// import { useAccount } from 'wagmi'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Wallet, Gift, Clock, TrendingUp } from 'lucide-react'
 import { Progress } from '../ui/progress'
+import { useStakingContext } from '@/hooks/useStakingContext'
 
 
 export default function StakingPosition() {
-
-  const stakeAmount = 0;
+    const { userDetails, claimRewards, loading } = useStakingContext();
+  const { stakeBalance, userReward } = userDetails;
 
   return (
     <Card className="bg-gradient-secondary shadow-card">
@@ -25,7 +25,7 @@ export default function StakingPosition() {
               </CardDescription>
             </div>
           </div>
-          {Number(stakeAmount) > 0 && (
+          {Number(stakeBalance) > 0 && (
             <Badge className="bg-success/10 text-success border-success/20">
               Active
             </Badge>
@@ -39,10 +39,10 @@ export default function StakingPosition() {
               <span className="text-sm text-muted-foreground">Pending Rewards</span>
               <Badge variant="outline">{2}% APR</Badge>
             </div>
-            <p className="text-lg font-bold text-foreground">{"pendingRewards"} ETH</p>
+            <p className="text-lg font-bold text-foreground">{Number(userReward) / 1e18} ETH</p>
             <div className="flex items-center mt-2 text-sm text-muted-foreground">
               <Clock className="h-4 w-4 mr-1" />
-              Next reward in {"nextRewardIn"}
+              Next reward in {"24h"}
             </div>
           </div>
           <div className="p-4 bg-muted rounded-lg">
@@ -50,7 +50,7 @@ export default function StakingPosition() {
               <span className="text-sm text-muted-foreground">Total Earned</span>
               <TrendingUp className="h-4 w-4 text-green-500" />
             </div>
-            <p className="text-lg font-bold text-foreground">{"totalEarned"} ETH</p>
+            <p className="text-lg font-bold text-foreground">{Number(userDetails.rewardRate) / 1e18} ETH</p>
             <p className="text-sm text-muted-foreground mt-2">Lifetime earnings from staking</p>
           </div>
         </div>
@@ -63,9 +63,13 @@ export default function StakingPosition() {
           <Progress value={10} className="h-2" />
           <p className="text-xs text-muted-foreground">Next reward distribution in {0}</p>
         </div>
-        <Button className="w-full">
+        <Button 
+          className="w-full" 
+          onClick={claimRewards}
+          disabled={loading || Number(userReward) === 0}
+        >
           <Gift className="mr-2 h-4 w-4" />
-          Claim Rewards ({0} RSK)
+          Claim Rewards ({Number(userReward) / 1e18} RSK)
         </Button>
       </CardContent>
       {/* <CardContent className="space-y-6">

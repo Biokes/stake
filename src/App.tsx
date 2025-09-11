@@ -4,6 +4,7 @@ import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import Home from './components/home';
 import { config } from './config';
+import { StakingProvider } from './contexts/StakingProvider';
 import AppLayout from './layout/AppLayout';
 import "./App.css";
 
@@ -14,9 +15,11 @@ const App = () => {
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
-          <AppLayout>
-            <Home />
-          </AppLayout>
+          <StakingProvider>
+            <AppLayout>
+              <Home />
+            </AppLayout>
+          </StakingProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

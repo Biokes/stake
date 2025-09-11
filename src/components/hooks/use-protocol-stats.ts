@@ -3,8 +3,9 @@ import { STAKING_CONTRACT_ADDRESS, STAKING_CONTRACT_ABI } from "@/constants";
 import type { ProtocolStats, StakeLog } from "@/lib/types";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { formatEther } from "viem";
+import { formatEther, type Hex } from "viem";
 import { usePublicClient } from "wagmi";
+import { useFetchStakes } from "./useFetchStakes";
 
 export function useProtocolStats() {
   const client = usePublicClient();
@@ -16,20 +17,31 @@ export function useProtocolStats() {
     rewardRate: 0,
     stakes: stakes,
   });
+  const { usersInfo } = useFetchStakes();
 
   const totalRewards = useCallback(async () => {
     try {
-      const data = await client?.readContract({
-        abi: STAKING_CONTRACT_ABI,
-        address: STAKING_CONTRACT_ADDRESS,
-        functionName: "getTotalRewards",
+      const uniqueUsers = Object.values(
+        usersInfo.reduce((acc, log) => {
+          acc[log.address] = log;
+          return acc;
+        }, {} as Record<string, StakeLog>)
+      );
+      uniqueUsers.forEach(async (data) => {
+        const rewards = await client?.readContract({
+          abi: STAKING_CONTRACT_ABI,
+          address: STAKING_CONTRACT_ADDRESS,
+          functionName: "getPendingRewards",
+          args: [data.address as Hex],
+        });
+        setProtocolStats({...protocolStats,totalReward: protocolStats.totalReward+=Number(formatEther(rewards?? 0n))})
       });
-      return Number(formatEther(data ?? 0n));
     } catch (error) {
       console.error("Active stakers error: ", error);
       return 0;
     }
-  }, [client]);
+  }, [client, protocolStats, usersInfo]);
+
   const totalReward = useCallback(async () => {
     try {
       const data = await client?.readContract({
@@ -43,6 +55,7 @@ export function useProtocolStats() {
       return 0;
     }
   }, [client]);
+
   const rewardRate = useCallback(async () => {
     try {
       const data = await client?.readContract({
@@ -56,6 +69,7 @@ export function useProtocolStats() {
       return 0;
     }
   }, [client]);
+
   const fetchStats = useCallback(async () => {
     try {
       const [staked, rewards, rate] = await Promise.all([
@@ -65,17 +79,18 @@ export function useProtocolStats() {
       ]);
 
       setProtocolStats({
-        totalReward: rewards,
+        totalReward: rewards??0,
         averageAPR: 10,
         totalStaked: staked,
         rewardRate: rate,
-        stakes:stakes
+        stakes: stakes,
       });
     } catch (error) {
       console.log("Fetch stats error: ", error);
       toast.error("Error fetching protocol stats");
     }
-  }, [rewardRate, totalReward, totalRewards]);
+  }, [rewardRate, stakes, totalReward, totalRewards]);
+
   useEffect(() => {
     fetchStats();
   }, [client, fetchStats]);
@@ -99,11 +114,10 @@ export function useProtocolStats() {
     ]);
   };
   useEffect(() => {
-    stakingContract.on("Staked", stakeFilter)
-    return () => { 
-      stakingContract.on("Staked", stakeFilter)
-    }
-  });
-
+    stakingContract.on("Staked", stakeFilter);
+    return () => {
+      stakingContract.on("Staked", stakeFilter);
+    };
+  }, []);
   return protocolStats;
 }

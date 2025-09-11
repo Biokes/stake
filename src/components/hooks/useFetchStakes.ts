@@ -5,7 +5,7 @@ import {
   viemClient,
 } from "./../../config/index";
 import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS } from "@/constants";
-import { useState, useCallback, useEffect, useMemo } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import type { StakeLog } from "@/lib/types";
@@ -13,8 +13,8 @@ import type { StakeLog } from "@/lib/types";
 export const useFetchStakes = () => {
   const { address } = useAccount();
   const [usersInfo, setUserInfo] = useState<StakeLog[]>([]);
+
   const fetchUserInfo = useCallback(async () => {
-    if (!address) return;
     try {
       const lastBlock = await ethersJsonRpcProvider.getBlockNumber();
       const allLogs = (await stakingContract.queryFilter(
@@ -34,12 +34,12 @@ export const useFetchStakes = () => {
       console.error(error);
       toast.error("Something went wrong fetching staking positions");
     }
-  }, [address]);
+  }, []);
 
-  useMemo(() => {
-    if (address) {
+  useEffect(() => {
+    // if (address) {
       fetchUserInfo();
-    }
+    // }
   }, [address, fetchUserInfo]);
 
   useEffect(() => {

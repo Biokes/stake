@@ -25,10 +25,11 @@ export default function Page() {
           acc[log.address] = log;
           return acc;
         }, {} as Record<string, StakeLog>)
-      );
+    );
+    
     const totalStakers = uniqueUsers.length
     const { userDetails } = useFetchUserInfo()
-    const {     withdraw, emergencyWithdraw,claimRewards  } = useStaking()
+    const { withdraw, emergencyWithdraw,claimRewards  } = useStaking()
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
@@ -47,10 +48,9 @@ export default function Page() {
                         <CardContent className="py-4 px-4">
                             <div className="flex items-center space-x-2">
                                 <TrendingUp className="h-5 w-5 text-primary" />
-                                <span className="text-sm font-medium text-muted-foreground">{rewardRate} APR</span>
+                                <span className="text-sm font-medium text-muted-foreground">Current APR</span>
                             </div>
-                            <p className="text-2xl font-bold text-foreground mt-2">10%</p>
-                            {/* <p className="text-sm text-muted-foreground">No active stakes</p> */}
+                            <p className="text-2xl font-bold text-foreground mt-2">{rewardRate}%</p>
                         </CardContent>
                     </Card>
 
@@ -180,7 +180,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
-
+            {/* <StakingPosition /> */}
             <StakingDialog open={isStakingDialogOpen} onOpenChange={setIsStakingDialogOpen} />
         </div>
     )

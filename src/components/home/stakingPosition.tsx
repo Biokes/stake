@@ -1,56 +1,18 @@
-import { useAccount } from 'wagmi'
+// import { useAccount } from 'wagmi'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Wallet, Gift, Clock, AlertTriangle, TrendingUp } from 'lucide-react'
-import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS,  } from '@/constants'
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
-import { toast } from 'sonner'
+// import { Separator } from '@/components/ui/separator'
+import { Wallet, Gift, Clock, TrendingUp } from 'lucide-react'
+// import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS,  } from '@/constants'
+// import { useWriteContract } from 'wagmi'
+// import { toast } from 'sonner'
 import { Progress } from '../ui/progress'
 
 
 export default function StakingPosition() {
-  const { address, isConnected } = useAccount()
-
-  const { writeContract, data: hash, isPending } = useWriteContract()
-  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
-
-  const handleClaimRewards = async () => {
-    if (!address) return
-    try {
-      writeContract({
-        address: STAKING_CONTRACT_ADDRESS,
-        abi: STAKING_CONTRACT_ABI,
-        functionName: 'claimRewards',
-        account: address,
-      })
-      toast("Your reward claim has been submitted")
-    } catch (error) {
-      toast("Failed to claim rewards")
-      console.log(error)  
-    }
-  }
-
-  const handleEmergencyWithdraw = async () => {
-    if (!address) return
-    try {
-      writeContract({
-        address: STAKING_CONTRACT_ADDRESS,
-        abi: STAKING_CONTRACT_ABI,
-        functionName: 'emergencyWithdraw',
-        account: address,
-      })
-      toast("Emergency withdrawal has been submitted")
-    } catch (error) {
-      toast("Failed to emergency withdraw")
-        console.log(error);   
-    }
-  }
-
 
   const stakeAmount = 0;
-  const rewardAmount = 0;
 
   return (
     <Card className="bg-gradient-secondary shadow-card">
@@ -107,7 +69,7 @@ export default function StakingPosition() {
         </div>
         <Button className="w-full">
           <Gift className="mr-2 h-4 w-4" />
-          Claim Rewards ({0} ETH)
+          Claim Rewards ({0} RSK)
         </Button>
       </CardContent>
       {/* <CardContent className="space-y-6">

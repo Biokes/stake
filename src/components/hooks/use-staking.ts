@@ -6,23 +6,10 @@ import {
 } from "@/constants";
 import { toast } from "sonner";
 import { parseEther } from "viem";
-import { useAccount, useWriteContract } from "wagmi";
-
-// export interface StakePosition {
-//   id: string;
-//   amount: string;
-//   duration: number;
-//   rewards: string;
-//   unlockTime: number;
-//   status: "active" | "ready" | "withdrawn";
-// }
+import { useWriteContract } from "wagmi";
 
 export interface StakingState {
-  // positions: StakePosition[];
-  // totalStaked: string;
-  // totalRewards: string;
-  // currentAPR: string;
-  // loadingStates: {
+
   isStaking: boolean;
   hasStaked: boolean;
   isApproving: boolean;
@@ -31,12 +18,10 @@ export interface StakingState {
   isWithdrawing: boolean;
   isWithdrawingEmergency: boolean;
   hasWithdrawnEmergency: boolean;
-  // };
 }
 
 export function useStaking() {
   const { writeContractAsync } = useWriteContract();
-  const {balance} = useAccount()
   const stakingState: StakingState = {
     isStaking: false,
     hasStaked: false,

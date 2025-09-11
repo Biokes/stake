@@ -14,12 +14,11 @@ export function useRewards() {
     nextRewardTime: 0,
     currentAPR: "0",
   }
-    const pendingRewards = async () => { 
+    // const pendingRewards = async () => { 
         
-    }
+    // }
   const claimRewards = async () => {
-    // TODO: Implement rewards claiming logic
-    console.log("claimRewards - unimplemented")
+
   }
 
   return {

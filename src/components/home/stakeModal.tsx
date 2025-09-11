@@ -24,7 +24,7 @@ export default function StakeModal({ setOpen }: { setOpen: () => void }) {
     const { execute, loading } = useApproveAndStakeToken(stakeValue);
     const [isValidStake, setValidStake] = useState(false)
     useEffect(() => {
-        setValidStake(BigInt(formatEther(tokenBalance).split(".")[0]) < BigInt(stakeValue))
+        setValidStake(BigInt(formatEther(BigInt(tokenBalance)).split(".")[0]) < BigInt(stakeValue))
      },[stakeValue, tokenBalance])
     return (
         <Dialog open onOpenChange={setOpen}>
@@ -42,7 +42,7 @@ export default function StakeModal({ setOpen }: { setOpen: () => void }) {
                             <div>
                                 <CardTitle className="text-xl w-full flex justify-between items-center p-1 gap-10">
                                         <h4>Stake RSK</h4>
-                                        <p className="p-1 text-[0.8rem] border shadow-md bg-gray-700 rounded text-white">Bal: { formatEther(tokenBalance).split(".")[0]} RSK</p>
+                                        <p className="p-1 text-[0.8rem] border shadow-md bg-gray-700 rounded text-white">Bal: { formatEther(BigInt(tokenBalance)).split(".")[0]} RSK</p>
                                 </CardTitle>
                                 <CardDescription className="text-xs">
                                     Stake your RSK tokens and earn rewards

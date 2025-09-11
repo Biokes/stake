@@ -66,9 +66,10 @@ export function useProtocolStats() {
 
       setProtocolStats({
         totalReward: rewards,
-        averageAPR: 0,
+        averageAPR: 10,
         totalStaked: staked,
         rewardRate: rate,
+        stakes:stakes
       });
     } catch (error) {
       console.log("Fetch stats error: ", error);

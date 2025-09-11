@@ -1,3 +1,4 @@
+import { formatEther } from 'viem';
 import { TOKEN_ABI, TOKEN_ADDRESS } from "@/constants";
 import { useCallback, useEffect, useState } from "react";
 import { useAccount, usePublicClient } from "wagmi";
@@ -24,6 +25,6 @@ export const useBalance = () => {
   useEffect(() => {
     fetchTokenBalance();
   }, [fetchTokenBalance]);
-
-  return { tokenBalance };
+  const returnValue = Number(formatEther(tokenBalance)) 
+  return { tokenBalance: returnValue};
 };

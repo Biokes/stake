@@ -1,31 +1,14 @@
-import type { EventLog } from "ethers";
+import { formatEther, type EventLog } from "ethers";
 import {
   ethersJsonRpcProvider,
   stakingContract,
   viemClient,
 } from "./../../config/index";
 import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS } from "@/constants";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
-
-export interface UserInfo {
-  stakedAmount: bigint;
-  lastStakeTimestamp: bigint;
-  rewardDebt: bigint;
-  pendingRewards: bigint;
-}
-export interface StakeLog {
-  address: string;
-  amount: bigint;
-  timestamp: bigint;
-  newTotalStaked: bigint;
-  currentRewardRate: bigint;
-}
-export interface UserInfoWithAddress {
-  address: string;
-  info: UserInfo;
-}
+import type { StakeLog } from "@/lib/types";
 
 export const useFetchStakes = () => {
   const { address } = useAccount();
@@ -53,7 +36,7 @@ export const useFetchStakes = () => {
     }
   }, [address]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (address) {
       fetchUserInfo();
     }
@@ -69,7 +52,9 @@ export const useFetchStakes = () => {
         logs.forEach((log) => {
           console.log(log);
           const stakeProps = log.args as StakeLog;
-          toast.success(`${stakeProps.amount.toString()} staked  tokens now.`);
+          toast.success(
+            `${formatEther(stakeProps.amount).toString()} tokens staked now.`
+          );
           setUserInfo((prev) => [
             ...prev,
             {

@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { Wallet, Gift, Clock, AlertTriangle } from 'lucide-react'
+import { Wallet, Gift, Clock, AlertTriangle, TrendingUp } from 'lucide-react'
 import { STAKING_CONTRACT_ABI, STAKING_CONTRACT_ADDRESS,  } from '@/constants'
 import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi'
 import { toast } from 'sonner'
+import { Progress } from '../ui/progress'
 
 
 export default function StakingPosition() {
@@ -73,8 +74,43 @@ export default function StakingPosition() {
           )}
         </div>
       </CardHeader>
-      
-      <CardContent className="space-y-6">
+        <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-muted-foreground">Pending Rewards</span>
+              <Badge variant="outline">{2}% APR</Badge>
+            </div>
+            <p className="text-lg font-bold text-foreground">{"pendingRewards"} ETH</p>
+            <div className="flex items-center mt-2 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4 mr-1" />
+              Next reward in {"nextRewardIn"}
+            </div>
+          </div>
+          <div className="p-4 bg-muted rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-muted-foreground">Total Earned</span>
+              <TrendingUp className="h-4 w-4 text-green-500" />
+            </div>
+            <p className="text-lg font-bold text-foreground">{"totalEarned"} ETH</p>
+            <p className="text-sm text-muted-foreground mt-2">Lifetime earnings from staking</p>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Reward Progress</span>
+            <span className="text-foreground">75%</span>
+          </div>
+          <Progress value={10} className="h-2" />
+          <p className="text-xs text-muted-foreground">Next reward distribution in {0}</p>
+        </div>
+        <Button className="w-full">
+          <Gift className="mr-2 h-4 w-4" />
+          Claim Rewards ({0} ETH)
+        </Button>
+      </CardContent>
+      {/* <CardContent className="space-y-6">
         { isConnected && Number(stakeAmount) > 0 ? (
           <>
             <div className="grid grid-cols-2 gap-4">
@@ -135,7 +171,7 @@ export default function StakingPosition() {
             </p>
           </div>
         )}
-      </CardContent>
+      </CardContent> */}
     </Card>
   )
 }

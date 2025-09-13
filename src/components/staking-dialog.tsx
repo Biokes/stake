@@ -23,15 +23,15 @@ interface StakingDialogProps {
 export function StakingDialog({ open, onOpenChange }: StakingDialogProps) {
   const [amount, setAmount] = useState("")
   const [showApprovalAlert, setShowApprovalAlert] = useState(false)
-  const { tokenBalance, approveAndStake, isApproving, isStaking } = useStakingContext()
+  const { tokenBalance, approve, stake, isApproving, isStaking } = useStakingContext()
 
   const balance = Number(formatEther(tokenBalance))
   const isValidAmount = amount && Number(amount) > 0 && Number(amount) <= balance
 
-  const handleApproveAndStake = async () => {
+  const approvePop = async () => {
     if (!isValidAmount) return
     try {
-      await approveAndStake(Number(amount))
+      await approve(Number(amount))
       setAmount("")
       onOpenChange(false)
     } catch (error) {
@@ -85,17 +85,17 @@ export function StakingDialog({ open, onOpenChange }: StakingDialogProps) {
           {showApprovalAlert && (
             <Alert>
               <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>
+              <AlertDescription className={"text-[0.75rem]"}>
                 You're about to stake {amount} RFK tokens. This will require an approval
                 transaction followed by the stake transaction. Do you want to proceed?
               </AlertDescription>
               <div className="flex gap-2 mt-2 w-full pl-[30px]">
-                <Button onClick={handleApproveAndStake} disabled={isApproving || isStaking}>
+                <Button onClick={approvePop} disabled={isApproving || isStaking}>
                   {isApproving ? "Approving..." : isStaking ? "Staking..." : "Confirm"}
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => setShowApprovalAlert(false)}
+                  onClick={() =>{ setShowApprovalAlert(false)}}
                   disabled={isApproving || isStaking}
                 >
                   Cancel
@@ -107,7 +107,10 @@ export function StakingDialog({ open, onOpenChange }: StakingDialogProps) {
           <div className="flex flex-col space-y-2">
             {isValidAmount && !showApprovalAlert && (
               <Button
-                onClick={() => setShowApprovalAlert(true)}
+                onClick={() => {
+                  setShowApprovalAlert(true)
+                  stake(Number(amount))
+                }}
                 disabled={isApproving || isStaking}
                 className="w-full"
               >

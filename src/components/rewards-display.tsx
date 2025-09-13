@@ -9,9 +9,9 @@ import { formatEther } from "viem"
 
 export function RewardsDisplay() {
   const { userDetails, protocolStats } = useStakingContext()
-  const formattedUserReward = Number(formatEther(userDetails.userReward))
+  const formattedUserReward = Number(formatEther(userDetails.pendingRewards))
   const apr = Number(protocolStats.rewardRate) / 1e18 * 100
-  const lastUpdateTime = Number(userDetails.lastUpdateTime)
+  const lastUpdateTime = Number(userDetails.lastStakeTimestamp)
   const progressValue = Math.min(((Date.now() / 1000 - lastUpdateTime) / 86400) * 100, 100)
 
   return (
@@ -43,7 +43,7 @@ export function RewardsDisplay() {
               <TrendingUp className="h-4 w-4 text-green-500" />
             </div>
             <p className="text-2xl font-bold text-foreground">
-              {Number(formatEther(userDetails.stakeBalance)).toFixed(4)} RFK
+              {Number(formatEther(userDetails.stakedAmount)).toFixed(4)} RFK
             </p>
             <p className="text-sm text-muted-foreground mt-2">Your current stake</p>
           </div>

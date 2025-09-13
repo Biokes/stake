@@ -16,10 +16,11 @@ export interface UserInfoWithAddress {
   info: UserInfo;
 }
 export interface UserDetails {
-  stakeBalance: bigint;
-  userReward: bigint;
-  lastUpdateTime: bigint;
-  rewardRate: bigint;
+    stakedAmount: bigint;
+    lastStakeTimestamp: bigint;
+    pendingRewards: bigint;
+    timeUntilUnlock: bigint;
+    canWithdraw: boolean;
 }
 
 

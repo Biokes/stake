@@ -15,6 +15,7 @@ export function StakeHero({ onStakeClick }: StakeHeroProps) {
       toast.info("Connect wallet to stake first")
       return
     }
+    console.log("open modal")
     onStakeClick()
   }
 
@@ -25,7 +26,7 @@ export function StakeHero({ onStakeClick }: StakeHeroProps) {
           Stake and Earn Your Rewards
         </h2>
         <p className="text-primary text-sm md:text-base max-w-[500px] mx-auto mb-6">
-          Join thousands of stakers earning competitive rewards on RFKereum. Simple,
+          Join thousands of stakers earning competitive rewards on RFK. Simple,
           secure, and transparent DeFi staking.
         </p>
         <Button
@@ -36,6 +37,7 @@ export function StakeHero({ onStakeClick }: StakeHeroProps) {
           Stake Now
         </Button>
       </CardContent>
+      
     </Card>
   )
 }

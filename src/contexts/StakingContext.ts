@@ -13,9 +13,10 @@ export type StakingContextType = {
   
   // Actions
   fetchUserInfo: () => Promise<void>
-  approveAndStake: (amount: number) => Promise<void>
+  approve: (amount: number) => Promise<void>
   claimRewards: () => Promise<void>
   emergencyWithdraw: () => Promise<void>
+  stake: (amount:number)=>Promise<void>
   
   // Loading States
   loading: boolean

@@ -2,16 +2,18 @@ import { DollarSign, TrendingUp, Users, Layers } from "lucide-react"
 import { StatCard } from "./StatCard"
 import { useStakingContext } from "@/hooks/useStakingContext"
 import { useAccount } from "wagmi"
+import { useEffect } from "react"
 
 export function StatsOverview() {
   const { isConnected } = useAccount()
-  const { protocolStats } = useStakingContext()
+  const { protocolStats, fetchUserInfo } = useStakingContext()
   const { totalStaked, rewardRate, totalRewards, stakersCount } = protocolStats
-  
-  const formattedTotalStaked = (Number(totalStaked) / 1e18).toFixed(2)
-  const formattedTotalRewards = (Number(totalRewards) / 1e18).toFixed(2)
-  const currentAPR = (Number(rewardRate) / 1e18 * 100).toFixed(2)
-
+  const formattedTotalStaked = (Number(totalStaked) / 1e18).toFixed(5)
+  const formattedTotalRewards = (Number(totalRewards) / 1e18).toFixed(5)
+  const currentAPR = (Number(rewardRate) / 1e18 * 100).toFixed(7)
+    useEffect(() => { 
+        fetchUserInfo()
+    },[fetchUserInfo])  
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
       <StatCard

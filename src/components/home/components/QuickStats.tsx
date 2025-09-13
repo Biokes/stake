@@ -1,13 +1,16 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { formatEther } from "viem"
 import { useStakingContext } from "@/hooks/useStakingContext"
+import { useEffect } from "react"
 
 export function QuickStats() {
   const { userDetails } = useStakingContext()
-  const formattedStakeBalance = formatEther(userDetails.stakeBalance)
-  const formattedUserReward = formatEther(userDetails.userReward)
-  const rewardAPR = Number(userDetails.rewardRate) / 1e18 * 100
-  
+  const formattedStakeBalance = formatEther(userDetails.stakedAmount)
+  const formattedUserReward = formatEther(userDetails.pendingRewards)
+  // const rewardAPR = Number(userDetails.) / 1e18 * 100
+    useEffect(() => {
+        // fetchTokenBalance()
+     },[])
   return (
     <Card>
       <CardContent className="p-4">
@@ -25,12 +28,12 @@ export function QuickStats() {
               {parseFloat(formattedUserReward).toFixed(4)} RFK
             </span>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className="text-muted-foreground">Your APR:</span>
             <span className="font-medium text-foreground">
               {rewardAPR.toFixed(2)}%
             </span>
-          </div>
+          </div> */}
         </div>
       </CardContent>
     </Card>

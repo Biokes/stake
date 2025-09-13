@@ -11,6 +11,7 @@ import "./App.css";
 const queryClient = new QueryClient();
 
 const App = () => {
+
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

@@ -1,12 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useState } from "react"
 import { RewardsDisplay } from "../rewards-display"
-// import { StakingDialog } from "../staking-dialog"
 import { StatsOverview } from "./components/StatsOverview"
 import { StakeHero } from "./components/StakeHero"
 import { QuickActions } from "./components/QuickActions"
 import { QuickStats } from "./components/QuickStats"
-// import { StickyStakeBar } from "./components/StickyStakeBar"
+import { StakingDialog } from "../staking-dialog"
 
 export default function Page() {
   const [isStakingDialogOpen, setIsStakingDialogOpen] = useState(false)
@@ -15,11 +14,9 @@ export default function Page() {
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-4 py-8">
                 <StatsOverview />
-
                 <div className="flex flex-col md:flex-row w-full gap-6">
                     <div className="w-full md:w-[60%] space-y-6">
-                        <StakeHero onStakeClick={() => setIsStakingDialogOpen(!isStakingDialogOpen)} />
-
+                      <StakeHero onStakeClick={() => setIsStakingDialogOpen(!isStakingDialogOpen)} />
                         <div className="gap-6">
                             <RewardsDisplay />
                         </div>
@@ -48,11 +45,10 @@ export default function Page() {
                     </div>
                 </div>
             </div>
-            {/* <StakingDialog
+            <StakingDialog
                 open={isStakingDialogOpen}
-                onOpenChange={setIsStakingDialogOpen} */}
-            {/* /> */}
-            {/* <StickyStakeBar onStakeClick={() => setIsStakingDialogOpen(true)} /> */}
+                onOpenChange={setIsStakingDialogOpen}/>
+            {/* <StickyStakeBar onStakeClick={() => setIsStakingDialogOpen(true)} />*/}
         </div>
     )
 }

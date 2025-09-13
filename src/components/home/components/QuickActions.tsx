@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 import { formatEther } from "viem"
 import { useStakingContext } from "@/hooks/useStakingContext"
+import { useAccount } from "wagmi"
 
 export function QuickActions() {
   const { userDetails, claimRewards, emergencyWithdraw } = useStakingContext()
-  const formattedUserReward = formatEther(userDetails.userReward)
-
+  const formattedUserReward = formatEther(userDetails.pendingRewards)
+  const isWithdrawable = userDetails.canWithdraw
+  const {address} = useAccount()
   return (
     <Card className="border border-border bg-muted/30">
       <CardContent className="py-6 px-4">
@@ -30,15 +32,22 @@ export function QuickActions() {
                 </div>
                 <Button
                   className="w-full bg-green-600 hover:bg-green-700 text-white"
-                  disabled={userDetails.userReward <= 0n}
+                  disabled={userDetails.pendingRewards <= 0n}
                   onClick={() => claimRewards()}
                 >
                   Claim Rewards
                 </Button>
               </div>
             </Card>
-
             <Button
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+              disabled={!isWithdrawable }
+              // onClick={() => with()}
+            >
+              withdraw
+            </Button>
+            <Button
+              disabled={!address}
               variant="destructive"
               className="w-full bg-red-700 hover:bg-red-800 text-white"
               onClick={() => emergencyWithdraw()}

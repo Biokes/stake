@@ -11,10 +11,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Coins, AlertTriangle } from "lucide-react"
-import { useStaking } from "./hooks/use-staking"
 import { Alert, AlertDescription } from "./ui/alert"
-import { toast } from "sonner"
-import { useBalance } from "./hooks/useBalance"
+import { useStakingContext } from "@/hooks/useStakingContext"
+import { formatEther } from "viem"
 
 interface StakingDialogProps {
   open: boolean
@@ -23,51 +22,26 @@ interface StakingDialogProps {
 
 export function StakingDialog({ open, onOpenChange }: StakingDialogProps) {
   const [amount, setAmount] = useState("")
-  const [isApproved, setIsApproved] = useState(false)
   const [showApprovalAlert, setShowApprovalAlert] = useState(false)
-  const [isApproving, setIsApproving] = useState(false)
-  const [isStaking, setIsStaking] = useState(false)
+  const { tokenBalance, approve, stake, isApproving, isStaking } = useStakingContext()
 
-  const { tokenBalance } = useBalance()
-  const { stake, approve } = useStaking()
-  const balance = tokenBalance
+  const balance = Number(formatEther(tokenBalance))
+  const isValidAmount = amount && Number(amount) > 0 && Number(amount) <= balance
 
-  const isValidAmount =
-    amount && Number.parseFloat(amount) > 0 && Number.parseFloat(amount) <= balance
-
-  const handleApproveConfirm = async () => {
-    setIsApproving(true)
+  const approvePop = async () => {
+    if (!isValidAmount) return
     try {
-      await approve(amount)
-      toast.success("Approval Successful")
-      setIsApproved(true)
-      setShowApprovalAlert(false)
-    } catch (error) {
-      toast.error("Approval Failed")
-      console.error("Approval failed error: ", error)
-    } finally {
-      setIsApproving(false)
-    }
-  }
-
-  const handleStake = async () => {
-    if (!isValidAmount || !isApproved) return
-
-    setIsStaking(true)
-    try {
-      await stake(amount)
+      await approve(Number(amount))
       setAmount("")
-      setIsApproved(false)
       onOpenChange(false)
-    } finally {
-      setIsStaking(false)
+    } catch (error) {
+      console.error("Staking failed:", error)
     }
   }
 
   const handleClose = () => {
     onOpenChange(false)
     setAmount("")
-    setIsApproved(false)
     setShowApprovalAlert(false)
   }
 
@@ -105,24 +79,24 @@ export function StakingDialog({ open, onOpenChange }: StakingDialogProps) {
                 }
               }}
             />
-            <p className="text-sm text-muted-foreground">Available: {balance} RSK</p>
+            <p className="text-sm text-muted-foreground">Available: {balance.toFixed(4)} RFK</p>
           </div>
 
           {showApprovalAlert && (
             <Alert>
               <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>
-                Are you sure you want to approve this app to deduct your stake from your
-                balance?
+              <AlertDescription className={"text-[0.75rem]"}>
+                You're about to stake {amount} RFK tokens. This will require an approval
+                transaction followed by the stake transaction. Do you want to proceed?
               </AlertDescription>
               <div className="flex gap-2 mt-2 w-full pl-[30px]">
-                <Button onClick={handleApproveConfirm} disabled={isApproving}>
-                  {isApproving ? "Approving..." : "Confirm"}
+                <Button onClick={approvePop} disabled={isApproving || isStaking}>
+                  {isApproving ? "Approving..." : isStaking ? "Staking..." : "Confirm"}
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => setShowApprovalAlert(false)}
-                  disabled={isApproving}
+                  onClick={() =>{ setShowApprovalAlert(false)}}
+                  disabled={isApproving || isStaking}
                 >
                   Cancel
                 </Button>
@@ -131,24 +105,24 @@ export function StakingDialog({ open, onOpenChange }: StakingDialogProps) {
           )}
 
           <div className="flex flex-col space-y-2">
-            {isValidAmount && !isApproved && !showApprovalAlert && (
+            {isValidAmount && !showApprovalAlert && (
               <Button
-                onClick={() => setShowApprovalAlert(true)}
-                disabled={isApproving}
+                onClick={() => {
+                  setShowApprovalAlert(true)
+                  stake(Number(amount))
+                }}
+                disabled={isApproving || isStaking}
                 className="w-full"
               >
-                Approve
+                Stake Now
               </Button>
             )}
-
-            {isApproved && (
-              <Button onClick={handleStake} disabled={isStaking} className="w-full">
-                <Coins className="mr-2 h-4 w-4" />
-                {isStaking ? "Staking..." : "Stake Tokens"}
-              </Button>
-            )}
-            <p className="text-xs w-full text-center text-red-400">After approval Always stake</p>
-            <Button variant="outline" onClick={handleClose} className={`${isApproved?"hidden":""} w-full bg-transparent`}>
+            <Button 
+              variant="outline" 
+              onClick={handleClose} 
+              className="w-full bg-transparent"
+              disabled={isApproving || isStaking}
+            >
               Cancel
             </Button>
           </div>

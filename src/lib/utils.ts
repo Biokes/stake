@@ -63,3 +63,23 @@ export function formatTimeRemaining(blockTimestamp: bigint | number): string {
 export function checkClaimable(data: number) { 
   return data<=0
 }
+export function formatTimeAgo(lastUpdateTime: number): string {
+  const now = Math.floor(Date.now() / 1000); 
+  let diff = now - lastUpdateTime;
+  const days = Math.floor(diff / (60 * 60 * 24));
+  diff %= 60 * 60 * 24;
+
+  const hours = Math.floor(diff / (60 * 60));
+  diff %= 60 * 60;
+
+  const minutes = Math.floor(diff / 60);
+
+  const parts: string[] = [];
+  if (days > 0) parts.push(`${days}d`);
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+
+  if (parts.length === 0) return "just now";
+
+  return parts.join(" ") + " ago";
+}

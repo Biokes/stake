@@ -6,9 +6,12 @@ import { Progress } from "@/components/ui/progress"
 import { Gift, TrendingUp, Clock } from "lucide-react"
 import { useStakingContext } from "@/hooks/useStakingContext"
 import { formatEther } from "viem"
+import { formatTimeAgo } from "@/lib/utils"
+import { useAccount } from "wagmi"
 
 export function RewardsDisplay() {
   const { userDetails, protocolStats } = useStakingContext()
+  const { isConnected} = useAccount()
   const formattedUserReward = Number(formatEther(userDetails.pendingRewards))
   const apr = Number(protocolStats.rewardRate) / 1e18 * 100
   const lastUpdateTime = Number(userDetails.lastStakeTimestamp)
@@ -33,7 +36,7 @@ export function RewardsDisplay() {
             <p className="text-2xl font-bold text-foreground">{formattedUserReward.toFixed(4)} RFK</p>
             <div className="flex items-center mt-2 text-sm text-muted-foreground">
               <Clock className="h-4 w-4 mr-1" />
-              Updated {Math.floor((Date.now() / 1000 - lastUpdateTime) / 60)} minutes ago
+              {isConnected? "Updated "+   formatTimeAgo(lastUpdateTime): "Connect to update rewards"}
             </div>
           </div>
 
@@ -52,9 +55,9 @@ export function RewardsDisplay() {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Reward Progress</span>
-            <span className="text-foreground">{progressValue.toFixed(0)}%</span>
+            <span className="text-foreground">{isConnected? progressValue.toFixed(0)+"%": 0 }</span>
           </div>
-          <Progress value={progressValue} className="h-2" />
+          <Progress value={isConnected?progressValue: 0} className="h-2" />
           <p className="text-xs text-muted-foreground">
             Rewards accrue continuously, claim at any time
           </p>

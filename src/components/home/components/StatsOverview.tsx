@@ -23,8 +23,8 @@ export function StatsOverview() {
       />
       <StatCard
         icon={TrendingUp}
-        label="Current APR"
-        value={`${currentAPR}%`}
+        label="Total Withdwawals" 
+        value={`${currentAPR}  RFK`}
       />
       <StatCard
         icon={Users}

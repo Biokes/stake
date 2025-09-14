@@ -1,5 +1,5 @@
 import '@rainbow-me/rainbowkit/styles.css';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import Home from './components/home';
@@ -8,14 +8,16 @@ import { StakingProvider } from './contexts/StakingProvider';
 import AppLayout from './layout/AppLayout';
 import "./App.css";
 
+
 const queryClient = new QueryClient();
 
 const App = () => {
 
+
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
+        <RainbowKitProvider theme={lightTheme({ accentColor: '#00B0C3', accentColorForeground: 'white' })}>
           <StakingProvider>
             <AppLayout>
               <Home />

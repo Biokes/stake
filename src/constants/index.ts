@@ -957,3 +957,4 @@ export const STAKING_CONTRACT_ABI = [
   },
 ] as const;
 export const STAKING_CONTRACT_ADDRESS = "0x950205b908722CEd0e3413D67e17EcD04F5e18Cc";
+export const SUBGRAPG_BASE_URL="https://api.studio.thegraph.com/query/120726/grahp-init/version"

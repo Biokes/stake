@@ -62,7 +62,7 @@ export const StakingProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
             console.error('Error fetching user details:', error)
         }
-    }, [address, publicClient, userDetails])
+    }, [address, publicClient])
 
     const approve = useCallback(async (amount: number) => {
         if (!address) return
@@ -145,7 +145,7 @@ export const StakingProvider = ({ children }: { children: ReactNode }) => {
             console.error('Error emergency withdrawing:', error)
         }
     }, [address, writeContractAsync, publicClient, fetchUserInfo, fetchTokenBalance])
-    
+
     useEffect(() => {
         if (address) {
             Promise.all([
@@ -156,22 +156,21 @@ export const StakingProvider = ({ children }: { children: ReactNode }) => {
     }, [address, fetchUserInfo, fetchTokenBalance])
 
     useEffect(() => {
-        // if (!address || !publicClient) return
-        // const unwatch = publicClient.watchContractEvent({
-        //     address: STAKING_CONTRACT_ADDRESS,
-        //     abi: STAKING_CONTRACT_ABI,
-        //     eventName: 'Staked',
-        //     onLogs: () => {
-        //         fetchUserInfo()
-        //         fetchTokenBalance()
-        //     },
-        // })
-
-        // return () => {
-        //     unwatch()
-        // }
+        if (!address || !publicClient) return
+        const unwatch = publicClient.watchContractEvent({
+            address: STAKING_CONTRACT_ADDRESS,
+            abi: STAKING_CONTRACT_ABI,
+            eventName: 'Staked',
+            onLogs: () => {
+                fetchUserInfo()
+                fetchTokenBalance()
+            },
+        })
+        return () => {
+            unwatch()
+        }
     }, [address, publicClient, fetchUserInfo, fetchTokenBalance])
-    // useEffect(() => {
+
     const fetchProtocolStats = useCallback(async () => {
         try {
             const totalStaked = await publicClient?.readContract({
@@ -191,29 +190,28 @@ export const StakingProvider = ({ children }: { children: ReactNode }) => {
     }, [protocolStats, publicClient])
 
     useEffect(() => {
-  const handler = (
-    user: string,
-    amount: ethers.BigNumberish,
-    timestamp: ethers.BigNumberish,
-    newTotalStaked: ethers.BigNumberish,
-    currentRewardRate: ethers.BigNumberish
-  ) => {
-    toast.success(`${user.substring(0, 4)}... staked ${formatEther(amount).substring(0, 5)} RFKs` );
-    if (user.toLowerCase() === address?.toLowerCase()) {
-      setUserDetails({
-        ...userDetails,
-        stakedAmount: BigInt(newTotalStaked.toString()),
-        lastStakeTimestamp: BigInt(timestamp.toString())
-      });
+        const handler = (
+            user: string,
+            amount: ethers.BigNumberish,
+            timestamp: ethers.BigNumberish,
+            newTotalStaked: ethers.BigNumberish,
+            currentRewardRate: ethers.BigNumberish
+        ) => {
+            toast.success(`${user.substring(0, 4)}... staked ${formatEther(amount).substring(0, 5)} RFKs`);
+            if (user.toLowerCase() === address?.toLowerCase()) {
+                setUserDetails({
+                    ...userDetails,
+                    stakedAmount: BigInt(newTotalStaked.toString()),
+                    lastStakeTimestamp: BigInt(timestamp.toString())
+                });
 
-      setProtocolStats({
-        ...protocolStats,
-        rewardRate: BigInt(currentRewardRate.toString()),
-      });
-    }
-  };
+                setProtocolStats({
+                    ...protocolStats,
+                    rewardRate: BigInt(currentRewardRate.toString()),
+                });
+            }
+        };
 
-        // stakingContract.on("Staked", handler);
         publicClient?.watchEvent({
             address: STAKING_CONTRACT_ADDRESS,
             event: parseAbiItem("event Staked(address indexed user, uint256 amount, uint256 timestamp, uint256 newTotalStaked, uint256 currentRewardRate)"),
@@ -222,15 +220,15 @@ export const StakingProvider = ({ children }: { children: ReactNode }) => {
             }
         })
 
-  fetchProtocolStats();
+        fetchProtocolStats();
 
-  return () => {
-    stakingContract.off("Staked", handler);
-  };
-}, [address, fetchProtocolStats, protocolStats, userDetails]);
+        return () => {
+            stakingContract.off("Staked", handler);
+        };
+    }, [address, fetchProtocolStats, protocolStats, publicClient, userDetails]);
 
     const value = {
-        protocolStats,  
+        protocolStats,
         stakes,
         userDetails,
         tokenBalance,
@@ -251,27 +249,3 @@ export const StakingProvider = ({ children }: { children: ReactNode }) => {
         </StakingContext.Provider>
     )
 }
-
-
-// Conversion of type '
-// {
-//     stakedAmount: bigint;
-//     lastStakeTimestamp: bigint;
-//     pendingRewards: bigint;
-//     timeUntilUnlock: bigint;
-//     canWithdraw: boolean;
-// }
-//  stakedAmount: user.stakedAmount,
-// lastStakeTimestamp: user.lastStakeTimestamp,
-// pendingRewards: getPendingRewards(_user),
-// timeUntilUnlock: timeUntilUnlock,
-// canWithdraw: block.timestamp >= user.lastStakeTimestamp + minLockDuration
-            
-//   stakeBalance: bigint;
-//   userReward: bigint;
-//   lastUpdateTime: bigint;
-//   rewardRate: bigint;
-// ' to type 'UserDetails'
-
-//   may be a mistake because neither type sufficiently overlaps with the other.If this was intentional, convert the expression to 'unknown' first.
-//     Type '{ stakedAmount: bigint; lastStakeTimestamp: bigint; pendingRewards: bigint; timeUntilUnlock: bigint; canWithdraw: boolean; }' is missing the following properties from type 'UserDetails': stakeBalance, userReward, lastUpdateTime, rewardRatets(2352)

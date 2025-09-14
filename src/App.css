@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url("https://fonts.googleapis.com/css2?family=Kings&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -121,5 +122,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Kings", cursive;
+    font-weight: 400;
+    font-style: normal;
   }
 }

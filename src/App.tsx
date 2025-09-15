@@ -7,13 +7,12 @@ import { config } from './config';
 import { StakingProvider } from './contexts/StakingProvider';
 import AppLayout from './layout/AppLayout';
 import "./App.css";
+// import { useEffect } from 'react';
 
 
 const queryClient = new QueryClient();
 
 const App = () => {
-
-
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>

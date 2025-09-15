@@ -36,3 +36,16 @@ export interface ProtocolStats {
   rewardRate: bigint;
   stakersCount: number;
 }
+export interface Protocol {
+  id: string;
+  totalStaked: string;
+  totalRewardsClaimed: string;
+  totalWithdrawn: string;
+  totalEmergencyWithdrawn: string;
+  currentRewardRate: number;
+  users: { id: string }[];
+}
+
+export interface ProtocolResponse {
+  protocol: Protocol;
+}

@@ -127,3 +127,10 @@
     font-style: normal;
   }
 }
+  .errorPage{
+      background-image: linear-gradient(rgba(80, 80, 78, 0.5) 1%, rgba(9, 9, 9, 0.9)),url("/public/404.svg");
+      @apply flex w-full h-full justify-center items-center;
+      & p {
+        @apply px-3 py-5 transition transform-all hover:scale-105 cursor-pointer;
+      }
+  } 

@@ -6,8 +6,9 @@ import Home from './components/home';
 import { config } from './config';
 import { StakingProvider } from './contexts/StakingProvider';
 import AppLayout from './layout/AppLayout';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-
+import Four04 from "./components/four04";
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -17,9 +18,17 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <StakingProvider>
-            <AppLayout>
-              <Home />
-            </AppLayout>
+            <Router>
+              <Routes>
+                <Route path="*" element={Four04} />
+                <Route path="/" element={
+                  <AppLayout>
+                    <Home />
+                  </AppLayout>
+                } />
+                {/* <Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} /> */}
+              </Routes>
+            </Router>
           </StakingProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

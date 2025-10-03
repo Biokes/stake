@@ -131,6 +131,25 @@
       background-image: linear-gradient(rgba(80, 80, 78, 0.5) 1%, rgba(9, 9, 9, 0.9)),url("/public/404.svg");
       @apply flex w-full h-full justify-center items-center;
       & p {
-        @apply px-3 py-5 transition transform-all hover:scale-105 cursor-pointer;
+        @apply px-3 py-5 transition-all duration-400 transform hover:scale-105 cursor-pointer text-white;
       }
   } 
+.hero{
+  background-image: linear-gradient(rgba(80, 80, 78, 0.5) 1%, rgba(9, 9, 9, 0.9)),url("/public/heroImage.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-style: normal;
+  background-position: center;
+  @apply h-[380px] md:h-[520px] flex text-center w-full;
+  h1, span{
+      font-family: "Knewave", "Niconne";
+  }
+  p{
+    font-family: "Niconne";
+  }
+  button{
+    font-family: "Niconne";
+     background:#07ab30;
+     @apply cursor-pointer hover:bg-green-800 text-white;
+  }
+}

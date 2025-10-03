@@ -8,7 +8,10 @@ import { StakingProvider } from './contexts/StakingProvider';
 import AppLayout from './layout/AppLayout';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Four04 from "./components/four04";
+import LandingPage from './components/landingPage';
+import Four04 from './components/four04';
+
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -20,13 +23,9 @@ const App = () => {
           <StakingProvider>
             <Router>
               <Routes>
-                <Route path="*" element={Four04} />
-                <Route path="/" element={
-                  <AppLayout>
-                    <Home />
-                  </AppLayout>
-                } />
-                {/* <Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} /> */}
+                <Route path="*" element={<Four04/>} />
+                <Route path="/" element={<LandingPage/>} />
+                <Route path="/stakings-board" element={<AppLayout><Home /></AppLayout>} />
               </Routes>
             </Router>
           </StakingProvider>

@@ -1,9 +1,14 @@
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import ContactUs from "./contactUs";
+import Navbar from "../commons/navbar";
+import Footer from "../commons/footer";
+import SupportedNetworks from "./supportedNetworks";
+
 export default function LandingPage() {
     return (
         <div>
+            <Navbar/>
             <main className="hero">
                 <section className="flex flex-col items-center justify-center text-center w-full p-2">
                     <motion.h1
@@ -13,7 +18,7 @@ export default function LandingPage() {
                         transition={{ duration: 1, ease: "easeOut" }}
                     >
                         <span className="text-white">Decentralized</span> <br />
-                        <span className="text-green-400 shadow-white">Staking</span><br />
+                        <span className="text-primary shadow-white">Staking</span><br />
                         <span className="text-white">for the future</span>
                     </motion.h1>
                     <motion.p
@@ -27,8 +32,9 @@ export default function LandingPage() {
                     <Button className=" transition-transform transform duration-400 ease-in-out hover:scale-108 my-2">Get Started</Button>
                 </section>
             </main>
-            
+            <SupportedNetworks/>
             <ContactUs />
+            <Footer/>
         </div>
     )
 }

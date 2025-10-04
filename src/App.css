@@ -122,25 +122,25 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Kings", cursive;
     font-weight: 400;
     font-style: normal;
   }
 }
-  .errorPage{
+.errorPage{
       background-image: linear-gradient(rgba(80, 80, 78, 0.5) 1%, rgba(9, 9, 9, 0.9)),url("/public/404.svg");
-      @apply flex w-full h-full justify-center items-center;
+      @apply flex w-full h-screen justify-center items-center;
       & p {
         @apply px-3 py-5 transition-all duration-400 transform hover:scale-105 cursor-pointer text-white;
       }
   } 
+  
 .hero{
-  background-image: linear-gradient(rgba(80, 80, 78, 0.5) 1%, rgba(9, 9, 9, 0.9)),url("/public/heroImage.jpeg");
+  background-image: linear-gradient(rgba(45, 45, 45, 0.5) 5%, rgba(9, 9, 9, 0.9)),url("/public/landingpage.svg");
   background-repeat: no-repeat;
   background-size: cover;
   font-style: normal;
   background-position: center;
-  @apply h-[380px] md:h-[520px] flex text-center w-full;
+  @apply h-[380px] md:h-[530px] flex text-center w-full;
   h1, span{
       font-family: "Knewave", "Niconne";
   }
@@ -149,7 +149,25 @@
   }
   button{
     font-family: "Niconne";
-     background:#07ab30;
-     @apply cursor-pointer hover:bg-green-800 text-white;
+     @apply cursor-pointer hover:bg-primary/70 text-white bg-primary transition-all transform duration-300;
   }
+}
+.contactPad{
+  @apply border-[1px] rounded shadow-md px-4 py-8 my-8;
+  article{
+    @apply flex flex-col gap-2;
+  }
+  label{
+    @apply pl-3;
+  }
+  input{
+    @apply mb-[10px];
+  }
+}
+.networks::-webkit-scrollbar{
+  display:none;
+}
+@keyframes spin {
+  from {translate: 0;}
+  to {translate: -100%;}
 }

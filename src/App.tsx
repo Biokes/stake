@@ -23,9 +23,9 @@ const App = () => {
           <StakingProvider>
             <Router>
               <Routes>
-                <Route path="*" element={<Four04/>} />
-                <Route path="/" element={<LandingPage/>} />
-                <Route path="/stakings-board" element={<AppLayout><Home /></AppLayout>} />
+                <Route path="*" element={<Four04 />} />
+                <Route path="/stakings-board" element={<AppLayout><Home /></AppLayout>}/>
+                <Route path="/" element={<LandingPage />} />
               </Routes>
             </Router>
           </StakingProvider>

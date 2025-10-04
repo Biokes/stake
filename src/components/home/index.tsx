@@ -21,7 +21,6 @@ export default function Page() {
                         <div className="gap-6">
                             <RewardsDisplay />
                         </div>
-
                         <Card>
                             <CardHeader>
                                 <CardTitle>Your Stake Positions</CardTitle>
@@ -47,10 +46,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
-            <StakingDialog
-                open={isStakingDialogOpen}
-                onOpenChange={setIsStakingDialogOpen} />
-            {/* <StickyStakeBar onStakeClick={() => setIsStakingDialogOpen(true)} />*/}
+            <StakingDialog open={isStakingDialogOpen} onOpenChange={setIsStakingDialogOpen} />
         </div>
     )
 }

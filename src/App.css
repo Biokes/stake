@@ -204,7 +204,7 @@
 }
 .about > div,
 .faq > div {
-  @apply flex flex-col sm:flex-row w-full px-2 my-8 gap-12 justify-center items-center;
+  @apply flex flex-col md:flex-row w-full px-2 my-8 gap-12 justify-center items-center;
 }
 .about > div > * {
   @apply h-[300px] w-full max-w-[450px] text-center;
@@ -218,4 +218,10 @@
 .faq {
   @apply pt-16 pb-6 flex flex-col items-center w-full ;
   background-color: rgba(82, 84, 84, 0.1);
+}
+.info{
+  @apply flex flex-col md:flex-row justify-center items-center md:gap-16;
+}
+.info > *{
+  @apply w-full sm:max-w-[350px]
 }

@@ -4,12 +4,28 @@ import ContactUs from "./contactUs";
 import Navbar from "../commons/navbar";
 import Footer from "../commons/footer";
 import SupportedNetworks from "./supportedNetworks";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+// import { ShieldCheck, BookmarkCheck, Link, type LucideIcon } from "lucide-react";
+import { GiShieldEchoes } from "react-icons/gi";
+import { GrMoney } from "react-icons/gr";
+import { FaLink } from "react-icons/fa6";
+
+
+import { Card } from "../ui/card";
+import { cn } from "@/lib/utils";
+import type { IconType } from "react-icons/lib";
+
+
+type CardProps = {
+    header: string,
+    body: string
+}
+
+type WorkingProps = {
+    icon: IconType,
+    texts: CardProps
+}
+
 
 export default function LandingPage() {
     const statsCard: { texts: string; numerics: string }[] = [
@@ -49,7 +65,7 @@ export default function LandingPage() {
         <section className="about">
             <p className="text-xl p-1 rounded-md text-nowrap bg-primary text-background font-bold w-[150px] text-center">About Us</p>
             <div >
-                <div className='text-white/70 md:leading-snug text-center items-center flex w-full h-full  p-2 text-sm md:text-lg'>
+                <div className='text-white/70 md:leading-snug text-center items-center flex w-full h-full  p-2 text-md sm:text-lg'>
                     Staketh makes advanced DeFi accessible to everyone. Whether you're staking for passive income,
                     exploring flash-loan arbitrage opportunities, or minting NFTs with exclusive rewards,
                     our platform guides you every step of the way. With our non-custodial architecture,
@@ -84,7 +100,6 @@ export default function LandingPage() {
             <SupportedNetworks />
         </div>
     )
-
 
     function FAQs() {
         const faqs = [
@@ -138,7 +153,7 @@ export default function LandingPage() {
                         <img src="/faqs.jpeg" alt="about us" loading="lazy" className="w-full h-full object-cover object-contain" />
                     </div>
                     <div className="flex flex-col">
-                        <p className='text-lg font-bold py-2'>Frequently asked questions</p>
+                        <p className='text-lg font-bold pb-2 sm:pt-3 md:py-2'>Frequently asked questions</p>
                         <Accordion type="single" collapsible>
                             {faqs.map((faq) => (
                                 <AccordionItem key={faq.value} value={faq.value}>
@@ -157,11 +172,126 @@ export default function LandingPage() {
         )
     }
 
+    // function StepsFlow() {
+    //     const steps = [
+    //         { number: 1, action: "Connect Wallet" },
+    //         { number: 2, action: "Select Network" },
+    //         { number: 3, action: "Stake Tokens" },
+    //         { number: 4, action: "Earn Rewards" },
+    //         { number: 5, action: "Unstake Anytime" },
+    //     ];
+
+    //     return (
+    //         <div
+    //             style={{
+    //                 height: "300px",
+    //                 display: "flex",
+    //                 flexDirection: "column",
+    //                 alignItems: "center",
+    //                 justifyContent: "center",
+    //             }}
+    //         >
+    //             {steps.map((step, i) => (
+    //                 <div key={i} style={{ textAlign: "center", position: "relative" }}>
+    //                     <div
+    //                         style={{
+    //                             width: "40px",
+    //                             height: "40px",
+    //                             borderRadius: "50%",
+    //                             background: "#0070f3",
+    //                             color: "white",
+    //                             display: "flex",
+    //                             alignItems: "center",
+    //                             justifyContent: "center",
+    //                             margin: "6px auto",
+    //                         }}
+    //                     >
+    //                         {step.number}
+    //                     </div>
+    //                     <p style={{ margin: "4px 0" }}>{step.action}</p>
+    //                     {i < steps.length - 1 && (
+    //                         <div
+    //                             style={{
+    //                                 width: "2px",
+    //                                 height: "20px",
+    //                                 background: "#ccc",
+    //                                 margin: "0 auto",
+    //                             }}
+    //                         />
+    //                     )}
+    //                 </div>
+    //             ))}
+    //         </div>
+    //     );
+    // }
+
+    const Workings = () => {
+        const props: WorkingProps[] = [
+            { icon: GiShieldEchoes, texts: { header: "Non-custodial security", body: "You are always in control of your assets. \nWe never take custody of your assets." } },
+            { icon: GrMoney, texts: { header: "Maximize rewards", body: "Maximize your earning with our optimized earning startegies and more benefits APYs and more." } },
+            { icon: FaLink, texts: { header: "Multi-Chain Support", body: "Stake assets across a number of growing blockchain networks." } },
+        ]
+        return (
+            <div className="text-center w-full py-12">
+                <h3 className="text-2xl font-bold">Why choose staketh?</h3>
+                <ul className='flex flex-col py-4 md:gap-4 gap-2 items-center'>
+                    {
+                        props.map(({ icon: Icon, texts }, index) => (
+                            <Card key={index} className={cn("max-w-[350px] flex flex-row px-2 hover:scale-105 h-[110px] items-center duration-400 trasition-all transform")}>
+                                <aside className='w-[60px] h-[60px] p-4 text-background bg-primary font-semibold rounded-[50%] flex items-center justify-center'>
+                                    <Icon className="w-[28px] h-[28px]" />
+                                </aside>
+                                <section className="flex flex-col p-1 text-start">
+                                    <h3 className="text-primary text-md font-semibold">{texts.header}</h3>
+                                    <h6 className="text-xs text-white/70">{texts.body}</h6>
+                                </section>
+                            </Card>
+                        ))
+                    }
+                </ul>
+            </div>
+        )
+    }
+    const Steps = () => {
+        const props: CardProps[] = [
+            { header: "Connect your wallet", body: "Connect with preffered non-custodial wallet." },
+            { header: "Choose your asset", body: "Select the asset you want to stake from our list of networks." },
+              { header: "Stake and Earn", body: "Stake assets, confirm transaction and start earning rewards immediately." }
+        ]
+        return (
+            <div>
+                <h3 className="text-2xl font-bold text-center w-full">How it works</h3>
+                <ul className='flex flex-col py-4 md:gap-4 gap-2 items-center'>
+                    {
+                        props.map((texts, index) => (
+                            <Card key={index} className={cn("w-full max-w-[350px] flex flex-row px-2 hover:scale-105 h-[110px] items-start duration-400 trasition-all transform gap-3")}>
+                                <aside className='w-[20px] h-[20px] p-4 text-background bg-primary font-semibold rounded-[50%] flex items-center justify-center text-center'>
+                                    <p className="w-[28px] h-[28px]">{ index+1 }</p>
+                                </aside>
+                                <section className="flex flex-col text-start">
+                                    <h3 className="text-primary text-lg font-semibold">{texts.header}</h3>
+                                    <h6 className="text-xs text-white/70">{texts.body}</h6>
+                                </section>
+                            </Card>
+                        ))
+                    }
+                </ul>
+            </div>
+        )
+    }
+
+    const Info = () => (
+        <article className="info">
+            <Workings />
+            <Steps />
+        </article>
+    )
     return (
         <div>
             <Navbar />
             <Hero />
             <ProtocolInfo />
+            <Info />
             <AboutUs />
             <FAQs />
             <ContactUs />

@@ -17,9 +17,6 @@ export default function ContactUs() {
                     Got some question for us ? Get in touch with our team.
                 </p>
                 <section className='flex md:flex-row flex-col  justify-center gap-10 md:gap-15 pt-5 contact'>
-                    <aside className="flex flex-col h-[400px] w-auto max-w-[350px] border-[1px] rounded-lg shadow-md overflow-hidden my-8">
-                        <img src="/contactUs.svg" alt="" className="object-center object-contain scale-140" />
-                    </aside>
                     <div className="flex flex-col gap-2 contactPad">
                         <article>
                             <Label htmlFor="message">Email</Label>
@@ -37,6 +34,9 @@ export default function ContactUs() {
                             Send Message
                         </Button>
                     </div>
+                     <aside className="flex flex-col h-[400px] w-auto max-w-[350px] border-[1px] rounded-lg shadow-md overflow-hidden my-8">
+                        <img src="/contactUs.svg" alt="" className="object-center object-contain scale-140" />
+                    </aside>
                 </section>
             </motion.div>
 

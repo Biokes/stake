@@ -209,9 +209,6 @@
 .about > div > * {
   @apply h-[300px] w-full max-w-[450px] text-center;
 }
-/* .faq{
-  @apply text-center w-full flex flex-col md:flex-row justify-center items-center gap-4 py-12;
-} */
 .faq > div > * {
   @apply h-[350px] md:h-[400px] w-full max-w-[500px] text-start justify-center flex flex-col;
 }

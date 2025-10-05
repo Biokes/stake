@@ -147,13 +147,13 @@ export default function LandingPage() {
 
         return (
             <div className="faq">
-                <p className="text-md p-1 rounded-md text-nowrap text-background font-bold w-[250px] text-center">{" "}</p>
+                <p className="p-1 rounded-md text-nowrap text-background font-bold w-[250px] text-center text-primary font-bold text-lg sm:text-2xl">Frequently asked questions </p>
                 <div>
                     <div className="w-full h-full rounded overflow-hidden border-[1px]">
                         <img src="/faqs.jpeg" alt="about us" loading="lazy" className="w-full h-full object-cover object-contain" />
                     </div>
                     <div className="flex flex-col">
-                        <p className='text-lg font-bold pb-2 sm:pt-3 md:py-2'>Frequently asked questions</p>
+                        <p className='text-lg font-bold pb-2 sm:pt-3 md:py-2'>{" "}</p>
                         <Accordion type="single" collapsible>
                             {faqs.map((faq) => (
                                 <AccordionItem key={faq.value} value={faq.value}>

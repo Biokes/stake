@@ -225,3 +225,12 @@
 .info > *{
   @apply w-full sm:max-w-[350px]
 }
+.footer{
+  @apply flex flex-col md:flex-row p-4 bg-primary text-background flex sm:justify-between items-center gap-1 justify-center;
+}
+.footerIcons{
+  @apply flex flex-row gap-2;
+}
+.footerIcons > * {
+  @apply cursor-pointer h-4 md:h-6 w-4 md:w-6 text-background;
+}

@@ -6,9 +6,15 @@ import Footer from "../commons/footer";
 import SupportedNetworks from "./supportedNetworks";
 
 export default function LandingPage() {
+    const statsCard: { texts: string; numerics: string }[] = [
+        { texts: "Total value locked", numerics: "$1.2B" },
+        { texts: "Total Rewards paid", numerics: "$1.2B" },
+        { texts: "Total Stakers", numerics: "$1.2B" },
+        { texts: "Total trade-able assets ", numerics: "$50M+" },
+    ]
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <main className="hero">
                 <section className="flex flex-col items-center justify-center text-center w-full p-2">
                     <motion.h1
@@ -32,9 +38,26 @@ export default function LandingPage() {
                     <Button className=" transition-transform transform duration-400 ease-in-out hover:scale-108 my-2">Get Started</Button>
                 </section>
             </main>
-            <SupportedNetworks/>
+            <div className="flex flex-col justify-center w-full text-center pt-12">
+                <section className="statsCard">
+                    {
+                        statsCard.map((card, index) => (
+                            <motion.div key={index}
+                                initial={{ opacity: 0, y: 40 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 3, ease: "easeOut" }}
+                                className="w-[40%] sm:w-[18%] py-4 rounded-2 text-center flex flex-col items-center transition-all transform duration-400 gap-2 rounded hover:scale-105 backdrop-2xl bg-primary/50"
+                            >
+                                <p className="text-white">{card.texts}</p>
+                                <h2 className="text-white">{card.numerics}</h2>
+                            </motion.div>
+                        ))
+                    }
+                </section>
+                <SupportedNetworks />
+            </div>
             <ContactUs />
-            <Footer/>
+            <Footer />
         </div>
     )
 }

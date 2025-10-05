@@ -38,7 +38,7 @@ export default function LandingPage() {
                     <Button className=" transition-transform transform duration-400 ease-in-out hover:scale-108 my-2">Get Started</Button>
                 </section>
             </main>
-            <div className="flex flex-col justify-center w-full text-center pt-12">
+            <div className="flex flex-col justify-center w-full text-center pt-12 mb-8">
                 <section className="statsCard">
                     {
                         statsCard.map((card, index) => (
@@ -56,6 +56,22 @@ export default function LandingPage() {
                 </section>
                 <SupportedNetworks />
             </div>
+                <section className="about">
+                    <p className="text-xl p-1 rounded-md text-nowrap bg-primary text-background font-bold w-[150px] text-center">About Us</p>
+                    <div >
+                        <div className='text-white/70 md:leading-snug text-center items-center flex w-full h-full  p-2 text-sm md:text-lg'>
+                            Staketh makes advanced DeFi accessible to everyone. Whether you're staking for passive income,
+                            exploring flash-loan arbitrage opportunities, or minting NFTs with exclusive rewards,
+                            our platform guides you every step of the way. With our non-custodial architecture,
+                            your assets remain under your control at all times. We're committed to transparency,
+                            security, and empowering users to unlock the full potential of decentralized finance
+                            across all supported networks.
+                        </div>
+                        <div className="w-full h-full rounded overflow-hidden border-[1px]">
+                            <img src="/about.jpeg" alt="about us" loading="lazy" className="w-full h-full object-cover object-contain" />
+                        </div>
+                    </div>
+                </section>
             <ContactUs />
             <Footer />
         </div>

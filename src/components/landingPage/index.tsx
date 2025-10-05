@@ -132,23 +132,26 @@ export default function LandingPage() {
 
         return (
             <div className="faq">
-                <p className="text-md p-1 rounded-md text-nowrap bg-primary text-background font-bold w-[250px] text-center">Frequently asked questions</p>
+                <p className="text-md p-1 rounded-md text-nowrap text-background font-bold w-[250px] text-center">{" "}</p>
                 <div>
                     <div className="w-full h-full rounded overflow-hidden border-[1px]">
                         <img src="/faqs.jpeg" alt="about us" loading="lazy" className="w-full h-full object-cover object-contain" />
                     </div>
-                    <Accordion type="single" collapsible>
-                        {faqs.map((faq) => (
-                            <AccordionItem key={faq.value} value={faq.value}>
-                                <AccordionTrigger>{faq.question}</AccordionTrigger>
-                                <AccordionContent>
-                                    {faq.answer.map((paragraph, index) => (
-                                        <p key={index}>{paragraph}</p>
-                                    ))}
-                                </AccordionContent>
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
+                    <div className="flex flex-col">
+                        <p className='text-lg font-bold py-2'>Frequently asked questions</p>
+                        <Accordion type="single" collapsible>
+                            {faqs.map((faq) => (
+                                <AccordionItem key={faq.value} value={faq.value}>
+                                    <AccordionTrigger>{faq.question}</AccordionTrigger>
+                                    <AccordionContent>
+                                        {faq.answer.map((paragraph, index) => (
+                                            <p key={index}>{paragraph}</p>
+                                        ))}
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </div>
                 </div>
             </div>
         )

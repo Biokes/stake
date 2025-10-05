@@ -194,10 +194,7 @@
 }
 
 .animate-infinite-scroll {
-  animation-name: infinite-scroll;
-  animation-duration: 40s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  animation: infinite-scroll 40s linear infinite;
   will-change: transform;
   display: flex;
 }

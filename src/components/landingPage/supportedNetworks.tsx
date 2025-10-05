@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-
 export default function SupportedNetworks() {
-  const supportedNetworks: string[] = [
+  const supportedNetworks = [
     'ethereum',
     'binance smart chain',
     'polygon',
@@ -29,128 +27,38 @@ export default function SupportedNetworks() {
     'pi'
   ];
 
-  const networksLoop = [...supportedNetworks, ...supportedNetworks];
-  const listRef = useRef<HTMLUListElement>(null);
-
-  useEffect(() => {
-    const list = listRef.current;
-    if (!list) return;
-
-    let start = 0;
-    const speed = 0.5;
-    const totalWidth = list.scrollWidth / 2;
-
-    function animate() {
-      start -= speed;
-      if (Math.abs(start) >= totalWidth) start = 0;
-      list!.style.transform = `translateX(${start}px)`;
-      requestAnimationFrame(animate);
-    }
-
-    requestAnimationFrame(animate);
-  }, []);
-
   return (
-    <div
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '90%',
-        margin: '0 auto',
-        overflow: 'hidden',
-        padding: '2rem 0',
-      }}
-    >
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 20,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0.75rem 1.5rem',
-          borderRadius: '1rem',
-          backdropFilter: 'blur(10px)',
-          background: 'rgba(255, 255, 255, 0.1)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-        }}
-      >
-        <h3
-          style={{
-            color: 'white',
-            fontSize: '1.125rem',
-            fontWeight: 600,
-            textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-          }}
-        >
-          Coming Soon on All Chains
-        </h3>
-      </div>
-
-     <div
-        style={{
-          marginTop: '4rem',
-          width: '100%',
-          borderRadius: '1rem',
-          border: '1px solid rgba(0,0,0,0.1)',
-          background: 'rgba(0, 120, 255, 0.05)',
-          padding: '1rem',
-          overflow: 'hidden',
-        }}
-      >
-        <div style={{ marginBottom: '0.75rem', textAlign: 'center' }}>
-          <h5
-            style={{
-              fontSize: '1.25rem',
-              fontWeight: 700,
-              color: '#0078ff',
-              textTransform: 'capitalize',
-            }}
-          >
-            Supported Networks
+    <div className="relative flex flex-col items-center justify-center w-full mx-auto overflow-hidden">
+      <div className="relative mt-5 w-[95%]  overflow-hidden [mask-image:linear-gradient(to_right,transparent_0,black_15%,black_85%,transparent_100%)]">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 px-3 py-1 text-primary rounded-2xl backdrop-blur-sm bg-background  shadow-xl">
+          <h5 className="text-xl font-bold capitalize text-center whitespace-nowrap ">
+            Coming soon on
           </h5>
         </div>
-       <ul
-          ref={listRef}
-          style={{
-            display: 'flex',
-            gap: '0.75rem',
-            whiteSpace: 'nowrap',
-            padding: '0.75rem 0',
-            margin: 0,
-            listStyle: 'none',
-            transform: 'translateX(0)',
-          }}
-        >
-          {networksLoop.map((text, index) => (
-            <li
-              key={`${text}-${index}`}
-              style={{
-                flex: '0 0 auto',
-                minWidth: '120px',
-                height: '40px',
-                borderRadius: '0.75rem',
-                background: 'rgba(0,120,255,0.2)',
-                color: '#0078ff',
-                fontSize: '1rem',
-                fontWeight: 600,
-                textAlign: 'center',
-                lineHeight: '40px',
-                textTransform: 'capitalize',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-              }}
-            >
-              {text}
-            </li>
-          ))}
-        </ul>
+        <div className="relative overflow-hidden py-3">
+          <div className="absolute inset-0 z-10 backdrop-blur-[1px] bg-white/20 pointer-events-none"></div>
+          <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent_0,black_15%,black_85%,transparent_100%)]">
+            <div className="flex animate-infinite-scroll opacity-40">
+              {supportedNetworks.map((network, index) => (
+                <div
+                  key={`first-${network}-${index}`}
+                  className="flex-shrink-0 min-w-[140px] pointer-events-none h-10 mx-1.5 rounded-xl bg-primary text-background text-sm font-medium text-center leading-10 capitalize shadow-sm blur-[0.5px]"
+                >
+                  {network}
+                </div>
+              ))}
+              {supportedNetworks.map((network, index) => (
+                <div
+                  key={`second-${network}-${index}`}
+                  className="flex-shrink-0 min-w-[140px] pointer-events-none h-10 mx-1.5 rounded-xl bg-primary text-background text-sm font-medium text-center leading-10 capitalize shadow-sm blur-[0.5px]"
+                >
+                  {network}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,12 +1,16 @@
 import '@rainbow-me/rainbowkit/styles.css';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import Home from './components/home';
 import { config } from './config';
 import { StakingProvider } from './contexts/StakingProvider';
 import AppLayout from './layout/AppLayout';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import LandingPage from './components/landingPage';
+import Four04 from './components/four04';
+import { Toaster } from "@/components/ui/sonner";
 
 const queryClient = new QueryClient();
 
@@ -15,11 +19,16 @@ const App = () => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
+        <RainbowKitProvider theme={lightTheme({ accentColor: '#045d67', accentColorForeground: 'white' })}>
           <StakingProvider>
-            <AppLayout>
-              <Home />
-            </AppLayout>
+            <Router>
+              <Routes>
+                <Route path="*" element={<Four04 />} />
+                <Route path="/stakings-board" element={<AppLayout><Home /></AppLayout>} />
+                <Route path="/" element={<LandingPage />} />
+              </Routes>
+            </Router>
+            <Toaster />
           </StakingProvider>
         </RainbowKitProvider>
       </QueryClientProvider>

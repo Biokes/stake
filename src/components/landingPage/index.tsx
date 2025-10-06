@@ -5,7 +5,6 @@ import Navbar from "../commons/navbar";
 import Footer from "../commons/footer";
 import SupportedNetworks from "./supportedNetworks";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-// import { ShieldCheck, BookmarkCheck, Link, type LucideIcon } from "lucide-react";
 import { GiShieldEchoes } from "react-icons/gi";
 import { GrMoney } from "react-icons/gr";
 import { FaLink } from "react-icons/fa6";
@@ -172,59 +171,6 @@ export default function LandingPage() {
         )
     }
 
-    // function StepsFlow() {
-    //     const steps = [
-    //         { number: 1, action: "Connect Wallet" },
-    //         { number: 2, action: "Select Network" },
-    //         { number: 3, action: "Stake Tokens" },
-    //         { number: 4, action: "Earn Rewards" },
-    //         { number: 5, action: "Unstake Anytime" },
-    //     ];
-
-    //     return (
-    //         <div
-    //             style={{
-    //                 height: "300px",
-    //                 display: "flex",
-    //                 flexDirection: "column",
-    //                 alignItems: "center",
-    //                 justifyContent: "center",
-    //             }}
-    //         >
-    //             {steps.map((step, i) => (
-    //                 <div key={i} style={{ textAlign: "center", position: "relative" }}>
-    //                     <div
-    //                         style={{
-    //                             width: "40px",
-    //                             height: "40px",
-    //                             borderRadius: "50%",
-    //                             background: "#0070f3",
-    //                             color: "white",
-    //                             display: "flex",
-    //                             alignItems: "center",
-    //                             justifyContent: "center",
-    //                             margin: "6px auto",
-    //                         }}
-    //                     >
-    //                         {step.number}
-    //                     </div>
-    //                     <p style={{ margin: "4px 0" }}>{step.action}</p>
-    //                     {i < steps.length - 1 && (
-    //                         <div
-    //                             style={{
-    //                                 width: "2px",
-    //                                 height: "20px",
-    //                                 background: "#ccc",
-    //                                 margin: "0 auto",
-    //                             }}
-    //                         />
-    //                     )}
-    //                 </div>
-    //             ))}
-    //         </div>
-    //     );
-    // }
-
     const Workings = () => {
         const props: WorkingProps[] = [
             { icon: GiShieldEchoes, texts: { header: "Non-custodial security", body: "You are always in control of your assets. \nWe never take custody of your assets." } },
@@ -252,6 +198,7 @@ export default function LandingPage() {
             </div>
         )
     }
+
     const Steps = () => {
         const props: CardProps[] = [
             { header: "Connect your wallet", body: "Connect with preffered non-custodial wallet." },
@@ -286,6 +233,7 @@ export default function LandingPage() {
             <Steps />
         </article>
     )
+
     return (
         <div>
             <Navbar />

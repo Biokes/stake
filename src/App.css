@@ -121,7 +121,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-all duration-300 transform;
     font-weight: 400;
     font-style: normal;
   }

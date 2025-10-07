@@ -10,28 +10,35 @@ import { GrMoney } from "react-icons/gr";
 import { FaLink } from "react-icons/fa6";
 import { Card } from "../ui/card";
 import { cn } from "@/lib/utils";
-import type { IconType } from "react-icons/lib";
+import { useConnectModal } from "@rainbow-me/rainbowkit"
+import { useNavigate } from "react-router-dom";
+import type { WorkingProps, CardProps } from "@/lib/types";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 
-type CardProps = {
-    header: string,
-    body: string
-}
-
-type WorkingProps = {
-    icon: IconType,
-    texts: CardProps
-}
 
 
 export default function LandingPage() {
+    const { address } = useAccount()
+    const { openConnectModal } = useConnectModal()
+    const navigate = useNavigate();
+    
+    useEffect(() => { 
+        if(address)
+        navigate("/profile")
+    }, [address, navigate])
+    
+
     const statsCard: { texts: string; numerics: string }[] = [
         { texts: "Total value locked", numerics: "$1.2B" },
         { texts: "Total Rewards paid", numerics: "$1.2B" },
         { texts: "Total Stakers", numerics: "$1.2B" },
         { texts: "Total trade-able assets ", numerics: "$50M+" },
     ]
-
+    const openModal = () => {
+        openConnectModal?.()
+    }
     const Hero = () => (
         <main className="hero">
             <section className="flex flex-col items-center justify-center text-center w-full p-2">
@@ -53,7 +60,7 @@ export default function LandingPage() {
                 >
                     Securely stake your digital assets and earn rewards with our non-custodial platform
                 </motion.p>
-                <Button className=" transition-transform transform duration-400 ease-in-out hover:scale-108 my-2">Get Started</Button>
+                <Button className=" transition-transform transform duration-400 ease-in-out hover:scale-108 my-2" onClick={openModal}>Get Started</Button>
             </section>
         </main>
     )
@@ -201,7 +208,7 @@ export default function LandingPage() {
         const props: CardProps[] = [
             { header: "Connect your wallet", body: "Connect with preffered non-custodial wallet." },
             { header: "Choose your asset", body: "Select the asset you want to stake from our list of networks." },
-              { header: "Stake and Earn", body: "Stake assets, confirm transaction and start earning rewards immediately." }
+            { header: "Stake and Earn", body: "Stake assets, confirm transaction and start earning rewards immediately." }
         ]
         return (
             <div>
@@ -211,7 +218,7 @@ export default function LandingPage() {
                         props.map((texts, index) => (
                             <Card key={index} className={cn("w-full max-w-[350px] flex flex-row px-2 hover:scale-105 h-[110px] items-start duration-400 trasition-all transform gap-3")}>
                                 <aside className='w-[20px] h-[20px] p-4 text-background bg-primary font-semibold rounded-[50%] flex items-center justify-center text-center'>
-                                    <p className="w-[28px] h-[28px]">{ index+1 }</p>
+                                    <p className="w-[28px] h-[28px]">{index + 1}</p>
                                 </aside>
                                 <section className="flex flex-col text-start">
                                     <h3 className="text-primary text-lg font-semibold">{texts.header}</h3>
@@ -233,7 +240,7 @@ export default function LandingPage() {
     )
 
     return (
-        <div>
+        <>
             <Navbar />
             <Hero />
             <ProtocolInfo />
@@ -242,6 +249,6 @@ export default function LandingPage() {
             <FAQs />
             <ContactUs />
             <Footer />
-        </div>
+        </>
     )
 }

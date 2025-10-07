@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ModeToggle from "./modeToggle";
 
 export default function Sidebar() {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -22,7 +23,7 @@ export default function Sidebar() {
                 }
             </section>
             <section className={"mb-5"}>
-                Disconnect wallet
+                <ModeToggle />
             </section>
         </aside>
     )

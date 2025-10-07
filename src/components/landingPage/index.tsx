@@ -23,10 +23,10 @@ export default function LandingPage() {
     const { address } = useAccount()
     const { openConnectModal } = useConnectModal()
     const navigate = useNavigate();
-    
+
     useEffect(() => { 
         if(address)
-        navigate("/profile")
+        navigate("/home")
     }, [address, navigate])
     
 

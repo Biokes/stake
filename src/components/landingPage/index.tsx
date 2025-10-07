@@ -8,8 +8,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { GiShieldEchoes } from "react-icons/gi";
 import { GrMoney } from "react-icons/gr";
 import { FaLink } from "react-icons/fa6";
-
-
 import { Card } from "../ui/card";
 import { cn } from "@/lib/utils";
 import type { IconType } from "react-icons/lib";

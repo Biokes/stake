@@ -13,7 +13,7 @@ export default function Sidebar() {
     const { openConnectModal } = useConnectModal()
     const { disconnect } = useDisconnect()
     const sections = [
-        "home", "profile", "chats"
+        "home", "profile", "chats", "MarketPlace"
     ]
     const navigate = useNavigate()
 

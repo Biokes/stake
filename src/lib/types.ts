@@ -1,3 +1,5 @@
+import type { IconType } from "react-icons/lib";
+
 export interface UserInfo {
   stakedAmount: bigint;
   lastStakeTimestamp: bigint;
@@ -35,4 +37,26 @@ export interface ProtocolStats {
   totalRewards: bigint;
   rewardRate: bigint;
   stakersCount: number;
+}
+export type CardProps = {
+    header: string,
+    body: string
+}
+
+export type WorkingProps = {
+    icon: IconType,
+    texts: CardProps
+}
+
+export type Theme = "dark" | "light" | "system"
+
+export type ThemeProviderProps = {
+  children: React.ReactNode
+  defaultTheme?: Theme
+  storageKey?: string
+}
+
+export type ThemeProviderState = {
+  theme: Theme
+  setTheme: (theme: Theme) => void
 }
